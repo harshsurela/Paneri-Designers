@@ -1,0 +1,428 @@
+{% extends 'customer/base.html' %}
+{% load static %}
+{% load my_filters %}
+
+{% block title %}
+<title>Product Details</title>
+{% endblock title %}
+{% block body %}
+<style>
+	.rate {
+		float: left;
+		height: 46px;
+		padding: 0 10px;
+	}
+
+	.rate:not(:checked)>input {
+		position: absolute;
+		top: -9999px;
+	}
+
+	.rate:not(:checked)>label {
+		float: right;
+		width: 1em;
+		overflow: hidden;
+		white-space: nowrap;
+		cursor: pointer;
+		font-size: 30px;
+		color: #ccc;
+	}
+
+	.rate:not(:checked)>label:before {
+		content: '★ ';
+	}
+
+	.rate>input:checked~label {
+		color: #ffc700;
+	}
+
+	.rate:not(:checked)>label:hover,
+	.rate:not(:checked)>label:hover~label {
+		color: #deb217;
+	}
+
+	.rate>input:checked+label:hover,
+	.rate>input:checked+label:hover~label,
+	.rate>input:checked~label:hover,
+	.rate>input:checked~label:hover~label,
+	.rate>label:hover~input:checked~label {
+		color: #c59b08;
+	}
+
+	.checked {
+		color: orange;
+	}
+</style>
+
+<!-- Upper Fix Part For all Pages-->
+
+<!--/single_page-->
+<!-- /banner_bottom_agile_info -->
+<div class="page-head_agile_info_w3l">
+	<div class="container">
+		<h3><span> </span></h3>
+		<!--/w3_short-->
+		<div class="services-breadcrumb">
+			<div class="agile_inner_breadcrumb">
+
+				<ul class="w3_short">
+					<li><a href="{% url 'home' %}">Home</a><i>|</i></li>
+					<li>{{product.product_name}}</li>
+				</ul>
+			</div>
+		</div>
+		<!--//w3_short-->
+	</div>
+</div>
+
+<!-- banner-bootom-w3-agileits -->
+<div class="banner-bootom-w3-agileits">
+	<div class="container">
+		<div class="col-md-4 single-right-left ">
+			<div class="grid images_3_of_2">
+				<div class="flexslider">
+
+					<ul class="slides">
+						<li data-thumb="/media/{{product.product_img}}">
+							<div class="thumb-image"> <img src="/media/{{product.product_img}}" data-imagezoom="true"
+									class="img-responsive"> </div>
+						</li>
+						<li data-thumb="/media/{{product.product_img}}">
+							<div class="thumb-image"> <img src="/media/{{product.product_img}}" data-imagezoom="true"
+									class="img-responsive"> </div>
+						</li>
+						<li data-thumb="/media/{{product.product_img}}">
+							<div class="thumb-image"> <img src="/media/{{product.product_img}}" data-imagezoom="true"
+									class="img-responsive"> </div>
+						</li>
+					</ul>
+					<div class="clearfix"></div>
+				</div>
+			</div>
+		</div>
+		<form method="post" action="{% url 'addtocart' product.id %}">
+			{% csrf_token %}
+			<div class="col-md-8 single-right-left simpleCart_shelfItem">
+				<h3>{{product.product_name}}</h3>
+				<p><span class="item_price">&#8377;{{d_amount}}</span> <del> &#8377;{{product.price}}</del></p>
+				<div class="rating1">
+					<span class="heading">Average Ratings: </span>
+					{% if avg == 0 %}
+					No Rating Has Been Given
+					{% else %}
+					{% for a in avg|times %}
+					<span class="fa fa-star checked"></span>
+					{% endfor %}
+					{% endif %}
+
+				</div><br>
+				<div class="color-quality">
+					<div class="color-quality-right">
+						<h5> Available Color : <b>{{product.color_id.color_name}}</b></h5>
+
+					</div>
+				</div>
+
+				<div class="color-quality">
+					<div class="color-quality-right">
+						<h5>Available Size :<b>{{product.size_id.details}}</b></h5>
+					</div>
+				</div><br><br>
+				<div class="row">
+					{% if product.qty_on_hand == 0 %}
+					<div class="occasion-cart col-md-3">
+						<a href="" name="addtocart" style="color:white;border-radius:2px;"
+							class="button  bg-danger badge badge-danger details hvr-outline-out"><small> <b>Out Of
+									Stock</b></small></a>
+					</div>
+					{% else %}
+					{% if user.is_authenticated %}
+					<div class="occasion-cart col-md-3">
+						<a href="{% url 'addtocart' product.id %}" name="addtocart"
+							style="color:white;border-radius:2px;"
+							class="button snipcart-details hvr-outline-out"><small> <b>ADD TO
+									CART</b></small></a>
+
+					</div>
+					{% else %}
+					<div class="occasion-cart col-md-3">
+						<a href="" data-toggle="modal" data-target="#myModal" name="addtocart"
+							style="color:white;border-radius:2px;"
+							class="button snipcart-details hvr-outline-out"><small> <b>ADD TO
+									CART</b></small></a>
+
+					</div>
+					{% endif %}
+					{% endif %}
+					{% if user.is_authenticated %}
+					<div class="occasion-cart col-md-3">
+
+						<a href="{% url 'addtowish' product.id %}" name="addtowishlist"
+							style="color:white;border-radius:2px;"
+							class="button  snipcart-details hvr-outline-out"><small> <b>WISHLIST
+								</b></small></a>
+
+					</div>
+					{% else %}
+					<div class="occasion-cart col-md-3">
+
+						<a href="" data-toggle="modal" data-target="#myModal"  name="addtowishlist"
+							style="color:white;border-radius:2px;"
+							class="button  snipcart-details hvr-outline-out"><small> <b>WISHLIST
+								</b></small></a>
+
+					</div>
+					{% endif %}
+
+				</div>
+			</div>
+		</form>
+		<div class="clearfix"> </div>
+		<!-- /new_arrivals -->
+		<div class="responsive_tabs_agileits">
+			<div id="horizontalTab">
+				<ul class="resp-tabs-list">
+					<li>Description</li>
+					<li>Reviews and Ratings</li>
+				</ul>
+				<div class="resp-tabs-container">
+					<!--/tab_one-->
+					<div class="tab1">
+
+						<div class="single_page_agile_its_w3ls">
+							<h6>{{product.product_name}}</h6>
+							<pclass="w3ls_para">{{product.desc}}</p>
+						</div>
+					</div>
+					<!--//tab_one-->
+					<div class="tab2">
+
+						<div class="single_page_agile_its_w3ls" style="border:none;">
+							{% if exist == "yes" %}
+							
+							<h4>You Have Already Submitted The Feedback </h4>
+							
+							{% endif %}
+							{% if feed  %}
+							{% if rat   %}
+							
+								
+							<div class="bootstrap-tab-text-grids">
+								
+								<div class="bootstrap-tab-text-grid">
+								{% for f in feed %}
+								{% for r in rat %}	
+									<div class="bootstrap-tab-text-grid-left">
+										<img src="/media/{{f.userbase.profile}}" alt="" style="margin-left: 40px;"
+											class="img-responsive">
+									</div>
+									<div class="bootstrap-tab-text-grid-right">
+										<ul>
+											<li><a href="">{{f.userbase.first_name}} {{f.userbase.last_name}}</a></li>
+											<li>
+												<div class="rate">
+													{% for rat in r.value|times %}
+													<span class="fa fa-star checked" value="{{rat}}"></span>
+													{% endfor %}
+												</div>
+											</li>
+										</ul>
+										<h4>{{f.fb_title}}</h4>
+										<p style="margin:0;">{{f.fb_desc}}</p>
+									</div>
+								</div>
+
+								{% endfor %}
+								{% endfor %}
+								{% else %}
+								<h4>No Feedback Is Given.</h4>
+								{% endif %}
+								{% else %}
+								<h4>No Feedback Is Given.</h4>
+
+								{% endif %}
+								{% if request.user.is_authenticated and sal is not None %}
+								{% if exist == "yes" %}
+								{% else %}
+								<br><br><br>
+								<div class="add-review">
+									
+									<form action="{% url 'addfeed' %}" method="post">
+										<h4 class="mt-3 text-left">Add a review</h4>
+										{% csrf_token %}
+										<input type="text" name="feedtit" placeholder="Title" required="Name">
+										<input type="email" value="{{request.user.email}}" name="Email" style="margin-top:20px;margin-left:0%;" readonly>
+										<textarea name="Message" placeholder="Your Feedback here...."
+											required=""></textarea>
+
+
+										<div class="add-review">
+											<div class="rating1">
+												<span><strong style="padding: 7.5px;font-size: large;float:left;">Give
+														Ratings :</strong></span>
+												<div class="rate">
+													<input type="radio" class="rating" id="star5" name="rate"
+														value="5" />
+													<label for="star5" title="text">5 stars</label>
+													<input type="radio" class="rating" id="star4" name="rate"
+														value="4" />
+													<label for="star4" title="text">4 stars</label>
+													<input type="radio" class="rating" id="star3" name="rate"
+														value="3" />
+													<label for="star3" title="text">3 stars</label>
+													<input type="radio" class="rating" id="star2" name="rate"
+														value="2" />
+													<label for="star2" title="text">2 stars</label>
+													<input type="radio" class="rating" id="star1" name="rate"
+														value="1" />
+													<label for="star1" title="text">1 star</label>
+												</div>
+											</div>
+											<input type="hidden" id="rat" name="rat" value="0">
+											<input type="hidden" name="pid" value="{{product.id}}">
+											<br><br><br>
+											<input style="margin-top: 20px;" type="submit" value="SEND">
+									</form>
+								</div>
+								{% endif %}
+								{% endif %}
+							</div>
+
+						</div>
+					</div>
+			</div>
+
+		</div>
+	</div>
+</div>
+
+		<!-- //new_arrivals -->
+		<!--/slider_owl-->
+
+		{% comment %} <div class="w3_agile_latest_arrivals">
+			<h3 class="wthree_text_info">Featured <span>Arrivals</span></h3>
+			<div class="col-md-3 product-men single">
+				<div class="men-pro-item simpleCart_shelfItem">
+					<div class="men-thumb-item">
+						<img src="images/w2.jpg" alt="" class="pro-image-front">
+						<img src="images/w2.jpg" alt="" class="pro-image-back">
+						<div class="men-cart-pro">
+							<div class="inner-men-cart-pro">
+								<a href="single.html" class="link-product-add-cart">Quick View</a>
+							</div>
+						</div>
+						<span class="product-new-top">New</span>
+
+					</div>
+					<div class="item-info-product ">
+						<h4><a href="single.html">Sleeveless Solid Blue Top</a></h4>
+						<div class="info-product-price">
+							<span class="item_price">$140.99</span>
+							<del>$189.71</del>
+						</div>
+						<div
+							class="snipcart-details top_brand_home_details item_add single-item hvr-outline-out button2">
+							<input type="submit" name="submit" value="Add to cart" class="button">
+						</div>
+
+					</div>
+				</div>
+			</div>
+			<div class="col-md-3 product-men single">
+				<div class="men-pro-item simpleCart_shelfItem">
+					<div class="men-thumb-item">
+						<img src="images/w4.jpg" alt="" class="pro-image-front">
+						<img src="images/w4.jpg" alt="" class="pro-image-back">
+						<div class="men-cart-pro">
+							<div class="inner-men-cart-pro">
+								<a href="single.html" class="link-product-add-cart">Quick View</a>
+							</div>
+						</div>
+						<span class="product-new-top">New</span>
+
+					</div>
+					<div class="item-info-product ">
+						<h4><a href="single.html">Black Basic Shorts</a></h4>
+						<div class="info-product-price">
+							<span class="item_price">$120.99</span>
+							<del>$189.71</del>
+						</div>
+						<div
+							class="snipcart-details top_brand_home_details item_add single-item hvr-outline-out button2">
+							<input type="submit" name="submit" value="Add to cart" class="button">
+						</div>
+
+					</div>
+				</div>
+			</div>
+			<div class="col-md-3 product-men single">
+				<div class="men-pro-item simpleCart_shelfItem">
+					<div class="men-thumb-item">
+						<img src="images/s6.jpg" alt="" class="pro-image-front">
+						<img src="images/s6.jpg" alt="" class="pro-image-back">
+						<div class="men-cart-pro">
+							<div class="inner-men-cart-pro">
+								<a href="single.html" class="link-product-add-cart">Quick View</a>
+							</div>
+						</div>
+						<span class="product-new-top">New</span>
+
+					</div>
+					<div class="item-info-product ">
+						<h4><a href="single.html">Aero Canvas Loafers </a></h4>
+						<div class="info-product-price">
+							<span class="item_price">$120.99</span>
+							<del>$199.71</del>
+						</div>
+						<div
+							class="snipcart-details top_brand_home_details item_add single-item hvr-outline-out button2">
+							<input type="submit" name="submit" value="Add to cart" class="button">
+						</div>
+
+					</div>
+				</div>
+			</div>
+			<div class="col-md-3 product-men single">
+				<div class="men-pro-item simpleCart_shelfItem">
+					<div class="men-thumb-item">
+						<img src="images/w7.jpg" alt="" class="pro-image-front">
+						<img src="images/w7.jpg" alt="" class="pro-image-back">
+						<div class="men-cart-pro">
+							<div class="inner-men-cart-pro">
+								<a href="single.html" class="link-product-add-cart">Quick View</a>
+							</div>
+						</div>
+						<span class="product-new-top">New</span>
+
+					</div>
+					<div class="item-info-product ">
+						<h4><a href="single.html">Ankle Length Socks</a></h4>
+						<div class="info-product-price">
+							<span class="item_price">$100.99</span>
+							<del>$159.71</del>
+						</div>
+						<div
+							class="snipcart-details top_brand_home_details item_add single-item hvr-outline-out button2">
+							<input type="submit" name="submit" value="Add to cart" class="button">
+						</div>
+
+					</div>
+				</div>
+			</div>
+			<div class="clearfix"> </div>
+			<!--//slider_owl-->
+		</div> {% endcomment %}
+	</div>
+</div>
+<!--//single_page-->
+
+<script type="text/javascript">
+	$(".rating").change(function () {
+		console.log("hello jarvis")
+		let r = $('input[name="rate"]:checked').val();
+		console.log(r)
+		$("#rat").attr("value", r)
+	})
+
+</script>
+{% endblock body %}

@@ -1,0 +1,188 @@
+{% extends "Mainadmin/index.html" %}
+{% load static %}
+{% block body %}
+      <!-- Main Content -->
+      <div class="main-content">
+        <section class="section">
+          <div class="section-body">
+            <!-- add content here -->
+          <div class="row ">
+            <div class="col-12">
+              <div class="card">
+               <div class="card-header">
+                  <h4>New Appointments</h4>
+                  <div class="card-header-form">
+                    
+                  </div>
+                </div>
+                <div class="card-body">
+                  <div class="table-responsive">
+                    {% if appointment %}
+                      
+                    <table class="table table-striped">
+                        
+                      
+                     
+                      <tr>
+                        <th>Customer Name</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Description</th>
+                        <th>Response</th>
+                      </tr>
+                      {% for app in appointment  %}
+                      {% if app.app_status == 0 %}
+                      <tr>
+                        <td class="text-truncate">
+                          {{app.userbase.first_name}} {{app.userbase.last_name}}
+                        </td>
+                        <td>{{app.app_date}}</td>
+                        <td>{{app.app_time}}</td>
+                        <td>{{app.app_desc}}</td>
+                        <form action="{% url 'appointmentResult' app.id %}" id="sup" method="POST">
+                          {% csrf_token %}
+                        <td>
+                          
+                          <button name="accept" class="bg-success badge badge-success" type="submit" value="accept"  style="border:none;color:white;">Accept</button>
+                          <button name="reject" class="bg-danger badge badge-danger " type="submit" value="reject" style="border:none;color:white;">Reject</button>
+                        </td>
+                      </form>
+                      </tr> 
+                    {% endif %}
+
+                      {% endfor %}
+                    </table>
+                    <div class="pagination">
+                      <span class="step-links">
+                          {% if appointment.has_previous %}
+                              <a href="?page=1"> <button class="btn btn-primary">&laquo; First</button></a>
+                              <a href="?page={{ appointment.previous_page_number }}"><button class="btn btn-primary"> Previous</button></a>
+                          {% endif %}
+                  
+                          <span class="current">
+                              Page {{ appointment.number }} of {{ appointment.paginator.num_pages }}.
+                          </span>
+                  
+                          {% if appointment.has_next %}
+                              <a href="?page={{ appointment.next_page_number }}"><button class="btn btn-primary">Next</button> </a>
+                              <a href="?page={{ appointment.paginator.num_pages }}"><button class="btn btn-primary">Last &raquo;</button></a>
+                          {% endif %}
+                      </span>
+                  </div>
+                    {% else %}
+                    <h6 class="text-center"> <b> No Records....</b></h6>
+                    {% endif %}
+
+                  </div>
+                </div>
+                
+              </div>
+              <div class="card">
+                <div class="card-header">
+                   <h4>Recent Appointments</h4>
+                   <div class="card-header-form">
+                     
+                   </div>
+                 </div>
+                 <div class="card-body">
+                  <div class="table-responsive">
+                    {% if appointment %}
+                      
+                    <table class="table table-striped">
+                        
+                      <tr>
+                        <th>Customer Name</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Description</th>
+                        <th>Response</th>
+                      </tr>
+                      {% for app in appointment  %}
+                      <tr>
+                        <td class="text-truncate">
+                          {{app.userbase.first_name}} {{app.userbase.last_name}}
+                        </td>
+                        <td>{{app.app_date}}</td>
+                        <td>{{app.app_time}}</td>
+                        <td>{{app.app_desc}}</td>
+                        
+                        <td>
+                          {% if app.app_status == 1 %}
+                          <label name="accept" class="bg-success badge badge-success"  value="accepted"  style="border:none;color:white;">Accepted</label>
+                          {% elif app.app_status == 2 %}
+                          <label name="reject" class="bg-danger badge badge-danger"  value="Rejected"  style="border:none;color:white;">Rejected</label>
+                          {% else %}
+                          <label >No Actions Has Been Taken</label>
+                          {% endif %}
+                        </td>
+                        <td><button  class="btn btn-primary delapp"  value="{{app.id}}">Delete</button></td>
+
+                      </tr> 
+                      {% endfor %}
+                    </table>
+                    <div class="pagination">
+                      <span class="step-links">
+                          {% if appointment.has_previous %}
+                              <a href="?page=1"> <button class="btn btn-primary">&laquo; First</button></a>
+                              <a href="?page={{ appointment.previous_page_number }}"><button class="btn btn-primary"> Previous</button></a>
+                          {% endif %}
+                  
+                          <span class="current">
+                              Page {{ appointment.number }} of {{ appointment.paginator.num_pages }}.
+                          </span>
+                  
+                          {% if appointment.has_next %}
+                              <a href="?page={{ appointment.next_page_number }}"><button class="btn btn-primary">Next</button> </a>
+                              <a href="?page={{ appointment.paginator.num_pages }}"><button class="btn btn-primary">Last &raquo;</button></a>
+                          {% endif %}
+                      </span>
+                  </div>
+                    {% else %}
+                    <h6 class="text-center"> <b> No Records....</b></h6>
+                    {% endif %}
+
+                  </div>
+                </div>
+                 
+               </div>
+            </div>
+          </div>
+
+            <!-- end content here -->
+          </div>
+           
+        </section>
+      </div>
+      <footer class="main-footer">
+        <div class="footer-right">
+        </div>
+      </footer>
+{% endblock body %}
+{% block js %}
+<script>
+$(".delapp").click(function () {
+  swal({
+  title: 'Are you sure?',
+  text: 'Once deleted, you will not be able to recover this record!',
+  icon: 'warning',
+  buttons: true,
+  dangerMode: true,
+})
+  .then((willDelete) => {
+    if (willDelete) {
+      
+      swal('Poof! Record has been deleted!', {
+        icon: 'success',
+      });
+      var url="{% url 'delappo' 123 %}";
+      var id=$(this).attr("value");
+      console.log(id);
+      window.location.href=url.replace('123', id);
+    } else {
+      swal('Your Record is safe!');
+    }
+  });
+});
+</script>  
+
+{% endblock js %}

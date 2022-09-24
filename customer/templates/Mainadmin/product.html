@@ -1,0 +1,245 @@
+{% extends "Mainadmin/index.html" %}
+{% load static %}
+{% load mathfilters %}
+{% block body %}
+<div class="main-content">
+    <section class="section">
+      <div class="section-body">
+        <!-- add content here -->
+        <form action="{% url 'addproduct' %}" id="sup" method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+         <div class="card">
+              <div class="card-header">
+                <h4>Add Product Details</h4>
+              </div>
+              <input type="hidden" value="{{company.id}}" name="company">
+              <div class="card-body">
+                <div class="form-group">
+                  <label>Product Name</label>
+                  <input type="text" name="pname" class="form-control" onkeyPress="return ValidateAlpha(event)" title="Enter only characters" required>
+                </div>
+                <div class="form-group">
+                  <label>Product Description</label>
+                  <textarea class="form-control" name="desc" required></textarea>
+                </div>
+                <div class="form-group">
+                  <label>Product Price</label>
+                  <input type="text" onkeypress="return isNumberKey(event)" class="form-control" name="price" required>
+                </div>
+                <div class="form-group">
+                  <label>Apply Discount on Product</label>
+                  <input type="text" class="form-control" onkeypress="return isNumberKey(event)" name="discount">
+                </div>
+                <div class="form-group">
+                  <label>Quantity on Hand to Sell</label>
+                  <input type="text" onkeypress="return isNumberKey(event)" class="form-control" name="qty" required>
+                </div>
+                <div class="form-group">
+                  <label>Category of the Product</label>
+                  <select name="cat" id="cat" class="form-control" required>
+                    <option selected disabled>Choose Category</option>
+                    
+                    {% for c in cat %}
+                    <option value="{{c.id}}" >{{c.cat_name}}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Sub Category of the Product</label>
+                  <select name="subcat" id="subcat" class="form-control" required>
+                    <option selected disabled>Choose Sub Category</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Product Size</label>
+                  <select name="size" id="" class="form-control" required>
+                    <option selected disabled>Choose Product Size</option>
+
+                    {% for ps in psize %}
+                    <option value="{{ps.id}}">{{ps.details}}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Product Color</label>
+                  <select name="color" id="" class="form-control" required>
+                    <option selected disabled>Choose Product Color</option>
+
+                    {% for pc in pcolor %}
+                    <option value="{{pc.id}}">{{pc.color_name}}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Product Image</label>
+                  <input type="file" class="form-control" name="pimg" accept="image/*" required>
+                </div>
+                <div class="card-footer text-right">
+                <button class="btn btn-primary mr-1" type="submit">Add Product</button>
+                <button class="btn btn-secondary" type="reset">Reset</button>
+                </div>
+              </div>
+         </div>
+        </form>
+            <h3 class="page-title">Added Products </h3>
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-12 table-responsive">
+                    
+                        {% if products %}
+                          
+                          <table id="order-listing" class="table" cellspacing="0" width="100%">
+                            <thead>
+                        <tr class="bg-primary ">
+                          <th>Product Id</th>
+                          <th>Product Name</th>
+                          <th>Product Image</th>
+                          <th>Price</th>
+                          <th>Discount</th>
+                          <th>On Hand</th>
+                          <th>Product Size</th>
+                          <th>Product Color</th>
+                          <th></th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for p in products %}
+                          <tr>
+                        
+                          <td>{{p.id}}</td>
+                          <td>{{p.product_name}}</td>
+                          <td><img src="/media/{{p.product_img}}" class="img-thumbnail" style="width:60%;height:100%;" /></td>
+                          <td>{{p.price}}</td>
+                          <td>{{p.discount|mul:100}} %</td>
+                          {% if p.qty_on_hand == 0 %}
+                          <td><span class="badge badge-danger text-dark">Out Of Stock</span></td>
+
+                          {% else %}
+
+                          <td>{{p.qty_on_hand}}</td>
+                          {% endif %}
+                          <td>{{p.color_id.color_name}}</td>
+                          <td>{{p.size_id.details}}</td>
+                          <td class="text-right">
+                            <a href="{% url 'viewproduct' p.id %}"><button class="btn btn-light">
+                              <i class="icon-eye text-primary"></i>View </button></a>
+                          </td>
+                          <td class="text-left">
+                            
+                            <button class="btn btn-light swal-15" value="{{p.id}}">
+                              <i class="icon-eye text-primary"></i>Remove </button>
+                          
+                          </td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                          </table>
+                    <div class="pagination">
+                      <span class="step-links">
+                          {% if products.has_previous %}
+                              <a href="?page=1">&laquo; <button class="btn btn-primary"> First</button></a>
+                              <a href="?page={{ products.previous_page_number }}"><button class="btn btn-primary"> Previous</button></a>
+                          {% endif %}
+                  
+                          <span class="current">
+                              Page {{ products.number }} of {{ products.paginator.num_pages }}.
+                          </span>
+                  
+                          {% if products.has_next %}
+                              <a href="?page={{ products.next_page_number }}"><button class="btn btn-primary">next</button> </a>
+                              <a href="?page={{ products.paginator.num_pages }}"><button class="btn btn-primary">Previous &raquo;</button></a>
+                          {% endif %}
+                      </span>
+                    </div>
+                        {% else %}
+                        <h6 class="text-center"> <b> No Records....</b></h6>
+                        {% endif %}
+                      
+                  </div>
+                </div>
+                
+              </div>
+            </div>
+            
+              <div class="row"><div class="col-6 col-md-3 col-lg-3">
+                <div class="card">
+                    <div class="card-header">
+                      <h4>Extra</h4>
+                    </div>
+                    <div class="card-body">
+                      <a href="{% url 'addcat' %}" type="button" class="btn btn-primary"> Add Category </a>
+                    </div> 
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- content end here -->
+      </div>
+    </section>
+  </div>
+  
+  <footer class="main-footer">
+    <div class="footer-right">
+    </div>
+  </footer>
+</div>
+
+
+{% endblock body %}
+{% block js %}
+<script>
+  //for category and sub category
+  $("#cat").change(function () {
+      const cat_id=$(this).val();
+      console.log(cat_id);
+      $.ajax({
+        type:"POST",
+        url: "{% url 'cat_ajax-data' %}",
+        data:{
+          'cat_id':cat_id,
+          'csrfmiddlewaretoken':$('input[name=csrfmiddlewaretoken]').val(),
+        },
+        success:function(data){
+          console.log("Success");
+          let html_data='<option value="" selected disabled>Choose Sub Category </option>';
+          data.forEach(function (data) {  
+            html_data =html_data+ `<option value="${data.id}" name="${data.id}">${data.cat_name}</option>`;
+  
+          });
+          $("#subcat").html(html_data);
+        },
+        error:function(error){
+          console.log("Error");
+        }
+      });
+      });
+    $(".swal-15").click(function () {
+      swal({
+      title: 'Are you sure?',
+      text: 'Once deleted, you will not be able to recover this record!',
+      icon: 'warning',
+      buttons: true,
+      dangerMode: true,
+    })
+      .then((willDelete) => {
+        if (willDelete) {
+          
+          swal('Poof! Record has been deleted!', {
+            icon: 'success',
+          });
+          var url="{% url 'delrecord' 123 %}";
+          var id=$(this).attr("value");
+          console.log(id);
+          window.location.href=url.replace('123', id);
+        } else {
+          swal('Your Record is safe!');
+        }
+      });
+    });
+  </script>  
+{% endblock js %}

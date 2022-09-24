@@ -1,0 +1,135 @@
+{% load static %}
+{% load my_filters %}
+<!DOCTYPE html>
+<html lang="en">
+
+
+<!-- blank.html  21 Nov 2019 03:54:41 GMT -->
+
+<head>
+  <meta charset="UTF-8">
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
+  <title>Invoice</title>
+  <!-- General CSS Files -->
+  <link rel="stylesheet" href="{% static 'assets/css/app.min.css' %}">
+  <!-- Template CSS -->
+  <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+  <!-- Custom style CSS -->
+  <link rel='shortcut icon' type='image/x-icon' href='assets/img/favicon.ico' />
+</head>
+
+<body>
+  <div class="loader"></div>
+     <!-- Main Content -->
+        <section class="section" style="padding:120px;">
+          <div class="section-body">
+            <!-- add content here -->
+
+        
+                <div class="card">
+                  <div class="text-center ">
+                    <img alt="image" src="{% static 'customer/assets/img/logo.png' %} " height="30" class="header-logo" /> <p
+                    class="logo-name" ><b>Paneri Designers</b></p>
+                    </div>
+                  <div class="card-header d-flex ">Invoice<strong>#{{sales.first.id}}</strong><a
+                      class="btn btn-sm btn-primary ms-auto me-1 d-print-none" href=""
+                      onclick="javascript:window.print();" style="margin-left:20px;">
+                      
+                       Print</a></div>
+                       
+                  <div class="card-body">
+                    
+                    <div class="row mb-4">
+                      <div class="col-sm-4">
+                        <h6 class="mb-3">From:</h6>
+                        <div><strong>{{company.comp_name}}</strong></div>
+                        <div>{{company.comp_add}}</div>
+                        <div>{{company.comp_email}}</div>
+                        <div>Phone: {{company.comp_phone}}</div>
+                      </div>
+
+                      <div class="col-sm-4">
+                        <h6 class="mb-3">To:</h6>
+                        <div><strong>Customer Name</strong></div>
+                        <div>{{sales.first.sales_id.userbase.first_name}} {{sales.first.sales_id.userbase.last_name}}</div>
+                        <div>{{sales.first.sales_id.userbase.cus_add1}}</div>
+                        <div>{{sales.first.sales_id.userbase.user_id.email}}</div>
+                        <div>Phone: +91 {{sales.first.sales_id.userbase.Cus_phone}}</div>
+                      </div>
+
+                      <div class="col-sm-4">
+                        <h6 class="mb-3">Details:</h6>
+                        <div>Invoice<strong>#{{sales.first.id}}</strong></div>
+                        <div> Order Date:{{sales.first.sales_id.sales_date}}</div>
+                        <div>Account Name: {{sales.first.sales_id.userbase.user_id.username}}</div>
+                        <div>Payment Status: <b>{{sales.first.sales_id.payment_status}}</b></div>
+                        
+                      </div>
+
+                    </div>
+
+                    <div class="table-responsive-sm" style="margin-top: 50px;">
+                      <table class="table table-striped">
+                        <thead>
+                          <tr>
+                            <th class="center">Sr.</th>
+                            <th>Item</th>
+                            <th>Description</th>
+                            <th class="center">Quantity</th>
+                            <th class="right">Unit Cost</th>
+                            <th class="right">Total</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                        {% for s in sales %}
+                          <tr>
+                            <td class="center">{{forloop.counter}}</td>
+                            <td class="left">{{s.product_id.product_name}}</td>
+                            <td class="left">{{s.product_id.desc|linebreaks}}</td>
+                            <td class="center">{{s.qty}}</td>
+                            <td class="right">&#8377;{{s.product_id.price|calcprice:s.product_id.discount}}</td>
+                            <td class="right">&#8377;{{s.final_price}}.0</td>
+                          </tr>
+                          {% endfor %}
+                        </tbody>
+                      </table>
+                    </div>
+
+                    <div class="row" style="margin-top: 20px;">
+                      <div class="col-lg-8 col-sm-10 ms-auto">
+                        <table class="table table-clear">
+                          <tbody>
+                            <tr>
+                              <td class="left"><strong>Total</strong></td>
+                              {% for m in price %}
+                              <td class="right"><strong>&#8377;{{m}}</strong></td>
+                              {% endfor %}
+
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div class="col-lg-8 col-sm-10">Thanks for buying from Us! We hope you visit us again! Wish you a good day!</div>
+                    </div>
+                  </div>
+                </div>
+              
+            <!-- end content here -->
+          </div>
+        </section>
+
+
+   
+  <!-- General JS Scripts -->
+  <script src="{% static 'assets/js/app.min.js' %}" ></script>
+  <!-- JS Libraies -->
+  <!-- Page Specific JS File -->
+  <!-- Template JS File -->
+  <script src="{% static 'assets/js/scripts.js' %}"></script>
+  <!-- Custom JS File -->
+</body>
+
+
+<!-- blank.html  21 Nov 2019 03:54:41 GMT -->
+
+</html>

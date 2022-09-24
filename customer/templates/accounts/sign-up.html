@@ -1,0 +1,235 @@
+{% extends "accounts/base.html" %}
+{% load static %}
+ {% block title %}
+ Sign Up
+ {% endblock title %}
+ {% block body %}
+ 
+<body class="bg-gray-200">
+
+  <div class="container position-sticky z-index-sticky top-0">
+    <div class="row">
+      <div class="col-12">
+
+      </div>
+    </div>
+  </div>
+  <main class="main-content  mt-0">
+    <section>
+      <div class="page-header min-vh-100">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-4 col-md-8 col-12 mx-auto">
+              <div class="card z-index-0 fadeIn3 fadeInBottom">
+                <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                  <div class=" border-radius-lg py-3 pe-1" style="background-color:#6777EF;">
+                    
+                    <h4 class="text-white font-weight-bolder text-center mt-1 mb-0">Sign Up</h4>
+                    
+                  </div>
+                </div>
+              <div class="card card-plain">
+                <div class="card-body">
+                  <form role="form" method="POST" action="{% url 'registration_2' %}" enctype="multipart/form-data" >
+                  {% csrf_token %}
+                    
+                    <div class="input-group input-group-outline mb-3">
+                      <label class="form-label">First Name</label>
+                      <input type="text" class="form-control" name="fname" required>
+                    </div>
+                    <div class="input-group input-group-outline mb-3">
+                      <label class="form-label">Last Name</label>
+                      <input type="text" class="form-control" name="lname" required>
+                    </div>
+                    <label class="form-label">Gender</label>
+                    <div class=" form-check  mb-3">
+                    <label class="form-check-label" for="flexRadioDefault1">
+                      Male
+                    </label>
+                    <input class="form-check-input" type="radio" name="gender"  value="male" id="flexRadioDefault1">
+
+                    <label class="form-check-label" for="flexRadioDefault1">
+                     Female
+                    </label>
+                    <input class="form-check-input" type="radio" name="gender" value="female" id="flexRadioDefault1">
+
+                    </div>
+                    <label class="form-label">Date of Birth</label>
+                    <div class="input-group input-group-outline mb-3">
+                      <input type="date" class="form-control" name="dob" required>
+                    </div>
+                    <div class="input-group input-group-outline mb-3">
+                      <label class="form-label">Phone</label>
+                      <input class="form-control" type="tel" id="phone" name="phone" pattern="[0-9]{10}" required>
+                    </div>
+                    <!-- <div class="input-group input-group-outline mb-3">
+                      <label class="form-label">Address Line-1</label>
+                      <input class="form-control" type="text" name="address1" required>
+                    </div>
+                    <div class="input-group input-group-outline mb-3">
+                      <label class="form-label">Address Line-2</label>
+                      <input class="form-control" type="text" name="address2" required>
+                    </div> -->
+                    <!-- <div class="input-group input-group-outline mb-3">
+                      <label class="form-label">Area</label>
+                      <input class="form-control" type="text" name="area" required>
+                    </div>
+                    <div class="input-group input-group-outline mb-3">
+                      <label class="form-label">City</label>
+                      <input class="form-control" type="text" name="city" required>
+                    </div>
+                    <div class="input-group input-group-outline mb-3">
+                      <label class="form-label">State</label>
+                      <input class="form-control" type="text" name="state" required>
+                    </div>
+                    <div class="input-group input-group-outline mb-3">
+                      <label class="form-label">Country</label>
+                      <input class="form-control" type="text" name="country" required>
+                    </div> -->
+                    <div class="input-group input-group-outline mb-3">
+                       
+                      <select id="country-data" class="form-control" name="country" >
+                        <option selected disabled>Choose a Country</option>
+
+                      {% if country %}
+                      {% for c in country  %}
+                        <option value="{{c.id}}">{{c.country_name}}</option>
+                        {% endfor %}
+                      
+                      {% endif %}
+                      </select>
+                    </div>
+                    <div class="input-group input-group-outline mb-3">
+                      <select name="state" class="form-control" id="state-data">
+                        <option selected disabled>Choose a State</option>
+
+                      </select>
+                    </div>
+                    <div class="input-group input-group-outline mb-3">
+                      <select name="city" class="form-control" id="city-data">
+                        <option selected disabled>Choose a City</option>
+                      </select>
+                    </div>
+                    <div class="input-group input-group-outline mb-3">
+                      <select name="area" id="area-data" class="form-control">
+                        <option selected disabled>Choose a Area</option>
+                        </select>
+                    </div>
+                    <div class="input-group input-group-outline mb-3">
+                      <textarea class="form-control" name="add1" placeholder="Address" required></textarea>
+                    </div>
+                    <div class="input-group input-group-outline mb-3">
+                      <label class="form-label">Pincode</label>
+                      <input class="form-control" type="text" name="pincode" pattern="[0-9]{6}" required>
+                    </div>
+                    <label class="form-label">Profile Picture</label>
+                    <div class="input-group input-group-outline mb-3">
+                      <input class="form-control" type="file" name="profile" required>
+                    </div>
+                    <div class="text-center">
+                      <button type="submit" class="btn btn-lg btn-lg w-100 mt-4 mb-0" style="background-color:#6777EF;color:white;">Register</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script>
+    //the ajax function for country
+  $("#country-data").change(function () {
+    const country_id=$(this).val();
+    console.log(country_id);
+    $.ajax({
+      type:"POST",
+      url: "{% url 'country_ajax-data' %}",
+      data:{
+        'country_id':country_id,
+        'csrfmiddlewaretoken':$('input[name=csrfmiddlewaretoken]').val(),
+      },
+      success:function(data){
+        console.log("Success");
+        let html_data='<option value="" selected disabled>Choose State </option>';
+        data.forEach(function (data) {  
+          html_data =html_data+ `<option value="${data.id}">${data.state_name}</option>
+          <input type="hidden" value="${data.id}" name="state_id" />
+          <input type="hidden" value="${country_id} name="country_id" />`;
+
+        });
+        $("#state-data").html(html_data);
+      },
+      error:function(error){
+        console.log("Error");
+      }
+    });
+    });
+    //the ajax function for states and city
+    $("#state-data").change(function () {
+    const state_id=$(this).val();
+    console.log(state_id);
+    $.ajax({
+      type:"POST",
+      url: "{% url 'state_ajax-data' %}",
+      data:{
+        'state_id':state_id,
+        'csrfmiddlewaretoken':$('input[name=csrfmiddlewaretoken]').val(),
+      },
+      success:function(data){
+        console.log("Success");
+        let html_data='<option value="" selected disabled>Choose City </option>';
+        data.forEach(function (data) {  
+          html_data =html_data+ `<option value="${data.id}">${data.city_name}</option>
+          <input type="hidden" value="${data.id}" name="city_id" />`;
+
+        });
+        $("#city-data").html(html_data);
+      },
+      error:function(error){
+        console.log("Error");
+      }
+    });
+    });
+    //city and area ajax function
+    $("#city-data").change(function () {
+    const city_id=$(this).val();
+    console.log(city_id);
+    $.ajax({
+      type:"POST",
+      url: "{% url 'city_ajax-data' %}",
+      data:{
+        'city_id':city_id,
+        'csrfmiddlewaretoken':$('input[name=csrfmiddlewaretoken]').val(),
+      },
+      success:function(data){
+        console.log("Success");
+        let html_data='<option value="" selected disabled>Choose Area </option>';
+        data.forEach(function (data) {  
+          html_data =html_data+ `<option value="${data.id}">${data.area_name}</option>
+          <input type="hidden" value="${data.id}" name="area_id" />`;
+
+        });
+        $("#area-data").html(html_data);
+      },
+      error:function(error){
+        console.log("Error");
+      }
+    });
+    });
+</script>
+{% if messages %}
+    {% for message in messages %}
+    <script>
+		$(document).ready(function(){
+			swal("{{message.tags}}", "{{message}}", "{{message.tags}}");
+			
+		});
+	
+	</script>
+  {% endfor %}
+  {% endif %}
+ {% endblock body %}
+ 
+</html>

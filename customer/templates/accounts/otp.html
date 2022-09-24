@@ -1,0 +1,96 @@
+{% extends "accounts/base.html" %}
+
+  {% block title %}
+  OTP
+  {% endblock title %}
+  
+
+ {% block body %}
+   <style>
+     a:hover{
+       color: #6777EF !important;
+     }
+   </style>
+<body class="bg-gray-200">
+  <div class="container position-sticky z-index-sticky top-0">
+    <div class="row">
+      <div class="col-12">
+        
+      </div>
+    </div>
+  </div>
+  <main class="main-content  mt-0">
+    <div class="page-header align-items-start min-vh-100" style="background-image: url('customer\assets\img\bacg.jpg');">
+      <span class="mask bg-gradient-white opacity-6"></span>
+      <div class="container my-auto">
+        <div class="row">
+          <div class="col-lg-4 col-md-8 col-12 mx-auto">
+            <div class="card z-index-0 fadeIn3 fadeInBottom">
+              <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                <div class=" border-radius-lg py-3 pe-1" style="background-color:#6777EF;">
+                  
+                  <h4 class="text-white font-weight-bolder text-center mt-1 mb-0">Enter OTP</h4>
+                </div>
+              </div>
+              
+              <div class="card-body">
+                <p class="text-center"><b>Enter the one time password to verify</b> </p>
+                <p class="text-center"><b>OTP Will Expire In 10 mins</b> </p>
+
+                <form role="form" action="{% url 'verifyotp' user %}" method="post" class="text-start">
+                  {% csrf_token %}
+                  
+                  <div class="input-group input-group-outline mb-3">
+                    <div id="otp" class="inputs d-flex flex-row justify-content-center mt-2"> <input class="m-2 text-center form-control rounded" pattern="[0-9]{1}" type="text" name="o1" id="first" maxlength="1" /> <input pattern="[0-9]{1}" class="m-2 text-center form-control rounded" type="text" name="o2" id="second" maxlength="1" /> <input pattern="[0-9]{1}" class="m-2 text-center form-control rounded" name="o3" type="text" id="third" maxlength="1" /> <input pattern="[0-9]{1}" class="m-2 text-center form-control rounded" type="text" name="o4" id="fourth" maxlength="1" /> <input pattern="[0-9]{1}" class="m-2 text-center form-control rounded" type="text" name="o5" id="fifth" maxlength="1" /> <input pattern="[0-9]{1}" class="m-2 text-center form-control rounded" type="text" name="o6" id="sixth" maxlength="1" /> </div>
+                  </div>
+                  <!-- <div class="form-check form-switch d-flex align-items-center mb-3">
+                    <input class="form-check-input" type="checkbox" id="rememberMe">
+                    <label class="form-check-label mb-0 ms-2" for="rememberMe">Remember me</label>
+                  </div> -->
+                  <div class="text-center">
+                    <button type="submit" class="btn w-100 my-4 mb-2" style="background-color:#6777EF;color:whitesmoke">Validate</button>
+                  </div>
+                  <p class="mt-4 text-sm text-center">
+                    Didn't received the OTP?
+                    <a href="{% url 'otp' %}" class="font-weight-bold" style="color:#6777EF !important ;">Resend</a>
+                  </p>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <footer class="footer position-absolute bottom-2 py-2 w-100">
+        <div class="container">
+          <div class="row align-items-center justify-content-lg-between">
+            <div class="col-12 col-md-6 my-auto">
+              <div class="copyright text-center text-sm text-white text-lg-start">
+                © <script>
+                  document.write(new Date().getFullYear())
+                </script>,
+                made <i class="fa fa-heart" aria-hidden="true"></i> by
+                <strong>Paneri Designers</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </main>
+ {% endblock body %}
+{% block js %}
+{% if messages %}
+    {% for message in messages %}
+    <script>
+		$(document).ready(function(){
+			swal("{{message.tags}}", "{{message}}", "{{message.tags}}");
+			
+		});
+		
+	</script>
+    {% endfor %}
+    {% endif %}
+{% endblock js %}
+  
+</body>
+</html>

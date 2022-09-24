@@ -1,0 +1,136 @@
+{% extends "Mainadmin/index.html" %}
+{% load static %}
+{% load my_filters %}
+
+{% block body %}
+
+      <!-- Main Content -->
+      <div class="main-content">
+        <section class="section">
+          <div class="section-body">
+            <!-- add content here -->
+            <h3 class="page-title">Received Orders </h3>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-12 table-responsive">
+                        {% if order %}
+                          
+                        <table id="order-listing"  class="table" cellspacing="0" width="100%">
+                          <thead>
+                            <tr class="bg-primary ">
+                              <th>Customer</th>
+                              <th>Order No.</th>
+                              <th>Recieved Date</th>
+                              <th>Total Price</th>
+                              <th>Ship to</th>
+                              <th>Payment Status</th>
+                              <th></th>
+                              <th></th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {% for o,m in order %}
+                            <tr>
+                              
+                              <td>{{o.userbase.first_name}} {{o.userbase.last_name}}</td>
+                              <td>{{o.id}}</td>
+                              <td>{{o.sales_date}}</td>
+                              <td>{{m}}</td>
+                              <td>{{o.userbase.area_id.area_name}}</td>
+                              
+                              <td class="text-center">
+                                {% if o.payment_status == "paid" %}
+                                <label class="badge badge-success">{{o.payment_status}}</label> 
+                                  {% elif o.payment_status == "pending" %}
+                                <label class="badge badge-warning">{{o.payment_status}}</label> 
+                                  {% elif o.payment_status == "cancelled" %}
+                                <label class="badge badge-danger">{{o.payment_status}}</label> 
+
+                                {% endif %}
+                              </td>
+                              <td class="text-right">
+                                <a href="{% url 'det_rec_ord' o.id %}"><button class="btn btn-light">
+                                  <i class="icon-eye text-primary"></i>View </button></a>
+                              </td>
+                              <td class="text-left">
+                                <a class="btn btn-light" href="{% url 'deliver' o.id%}" style="color: white;background-color: orange; ">
+                                  <i class="icon-eye text-primary"></i>Deliver</a>
+                              </td>
+                            </tr>
+                            {% endfor %}
+                           
+                          </tbody>
+                        </table>
+                        <div class="pagination">
+                          <span class="step-links">
+                              {% if order.has_previous %}
+                                  <a href="?page=1">&laquo; <button class="btn btn-primary"> First</button></a>
+                                  <a href="?page={{ order.previous_page_number }}"><button class="btn btn-primary"> Previous</button></a>
+                              {% endif %}
+                      
+                              <span class="current">
+                                  Page {{ order.number }} of {{ order.paginator.num_pages }}.
+                              </span>
+                      
+                              {% if products.has_next %}
+                                  <a href="?page={{ order.next_page_number }}"><button class="btn btn-primary">next</button> </a>
+                                  <a href="?page={{ order.paginator.num_pages }}"><button class="btn btn-primary">Previous &raquo;</button></a>
+                              {% endif %}
+                          </span>
+                      </div>
+                        {% else %}
+                      <h6 class="text-center"> <b> No Records....</b></h6>
+                        
+                        {% endif %}
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <!-- content end here -->
+          </div>
+        </section>
+      </div>
+      <footer class="main-footer">
+        <div class="footer-right">
+        </div>
+      </footer>
+    </div>
+  </div>
+{% endblock body %}
+
+{% block js %}
+<script>
+$(".del").click(function () {
+  swal({
+  title: 'Are you sure?',
+  text: 'Once deleted, you will not be able to recover this record!',
+  icon: 'warning',
+  buttons: true,
+  dangerMode: true,
+})
+  .then((willDelete) => {
+    if (willDelete) {
+      
+      swal('Poof! Record has been deleted!', {
+        icon: 'success',
+      });
+      var url="{% url 'delrorder' 123 %}";
+      var id=$(this).attr("value");
+      console.log(id);
+      window.location.href=url.replace('123', id);
+    } else {
+      swal('Your Record is safe!');
+    }
+  });
+});
+</script>  
+
+{% endblock js %}
+</body>
+</html>

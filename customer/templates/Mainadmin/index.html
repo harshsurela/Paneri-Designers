@@ -1,0 +1,306 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
+  <title>Admin Dashboard</title>
+  <!-- General CSS Files -->
+  <link rel="stylesheet" href="{% static 'customer/assets/css/app.min.css' %} ">
+  <link rel="stylesheet" href="{% static 'customer/assets/bundles/datatables/datatables.min.css' %} ">
+  <link rel="stylesheet" href="{% static 'customer/assets/bundles/datatables/dataTables.bootstrap4.min.css' %} ">
+  <link rel="stylesheet" href="{% static 'customer/assets/bundles/datatables/select.bootstrap4.min.css' %} ">
+  <!-- Template CSS -->
+  <link rel="stylesheet" href="{% static 'customer/assets/css/style.css' %} ">
+  <link rel="stylesheet" href="{% static 'customer/assets/css/components.css' %} ">
+  <!-- Custom style CSS -->
+  <link rel="stylesheet" href="{% static 'customer/assets/css/custom.css' %} ">
+  <link rel='shortcut icon' type='image/x-icon' href="{% static 'customer/assets/img/favicon.ico' %} " />
+  <SCRIPT language=Javascript>
+    
+    function isNumberKey(evt)
+    {
+       var charCode = (evt.which) ? evt.which : evt.keyCode;
+       if (charCode != 46 && charCode > 31 
+         && (charCode < 48 || charCode > 57))
+          return false;
+
+       return true;
+    }
+    //-->
+ </SCRIPT>
+ <script>
+function ValidateAlpha(evt)
+    {
+      var key=event.keyCode;
+        return ((key>=65&&key<=90)||(key==32)||(key>=95&&key<=122));
+    }
+</script>
+ <style>
+   
+#success-alert{
+  width:fit-content;
+  margin-top:5rem;
+  margin-left:280px;
+  position:absolute;
+  z-index: 5;
+    border: 2px solid black;
+    font-size: larger;
+ }
+
+ @media screen and (max-width:480px){
+ 
+   #success-alert{
+     width:fit-content;
+     margin-top:150px;
+     margin-left:70px;
+     position:fixed;
+     z-index: 10;
+    border: 2px solid black;
+    font-size: larger;
+    }
+    .container .d-flex,.container .title{
+      width: 500px;
+    }
+ }
+ /*new*/
+input.parsley-success,
+/* input.parsley-pattern-success, */
+ /* select.parsley-success,*/
+ textarea.parsley-success { 
+   color: #468847;
+   background-color: #DFF0D8;
+   border: 1px solid #D6E9C6;
+ }
+
+ input.parsley-error,
+ /* input.parsley-pattern-error, 
+ select.parsley-error,*/
+ textarea.parsley-error   {
+   color: #B94A48;
+   background-color: #F2DEDE;
+   border: 1px solid #EED3D7;
+ }
+
+ .parsley-errors-list {
+   margin: 2px 0 3px;
+   padding: 0;
+   list-style-type: none;
+   font-size: 0.9em;
+   line-height: 0.9em;
+   opacity: 0;
+
+   transition: all .3s ease-in;
+   -o-transition: all .3s ease-in;
+   -moz-transition: all .3s ease-in;
+   -webkit-transition: all .3s ease-in;
+ }
+
+ .parsley-errors-list.filled {
+   opacity: 1;
+ }
+ 
+ .parsley-type, .parsley-required, .parsley-equalto,.parsley-pattern,.parsley-minlength,.parsley-maxlength{
+  color:#ff0000;
+ }
+ 
+
+ #lblCartCounter {
+  font-size: 12px;
+  background: black;
+  color: #fff;
+  padding: 2px 5px;
+  vertical-align: top;
+  margin-left: -25px; 
+}
+
+ </style>
+</head>
+<body>
+  <div class="loader"></div>
+  <div id="app">
+    <div class="main-wrapper main-wrapper-1">
+      <div class="navbar-bg"></div>
+      <nav class="navbar navbar-expand-lg main-navbar sticky">
+        <div class="form-inline mr-auto">
+          <ul class="navbar-nav mr-3">
+            <li><a href="#" data-toggle="sidebar" class="nav-link nav-link-lg
+									collapse-btn"> <i data-feather="align-justify"></i></a></li>
+            <li><a href="#" class="nav-link nav-link-lg fullscreen-btn">
+                <i data-feather="maximize"></i>
+              </a></li>
+            
+          </ul>
+        </div>
+        <span class='badge badge-secondary' id='lblCartCounter'></span>
+        <ul class="navbar-nav navbar-right">
+          
+          <li class="dropdown dropdown-list-toggle"><a href="" id="read" data-toggle="dropdown"
+            class="nav-link notification-toggle nav-link-lg"><i data-feather="bell" class="bell"></i>
+          </a>
+          
+          <div class="dropdown-menu dropdown-list dropdown-menu-right pullDown">
+            <div class="dropdown-header noti">
+              Notifications
+            </div>
+            <div id="notif">
+              <h6> No New Notifications</h6>
+            </div>
+          </div>
+        </li>
+          <li class="dropdown"><a href="#" data-toggle="dropdown"
+              class="nav-link dropdown-toggle nav-link-lg nav-link-user"> <img alt="image" src="/media/{{request.user.userbase.profile}} "
+                class="user-img-radious-style"> <span class="d-sm-none d-lg-inline-block"></span></a>
+            <div class="dropdown-menu dropdown-menu-right pullDown">
+              <div class="dropdown-title">Hello {{request.user.userbase.first_name}} {{request.user.userbase.last_name}}</div>
+              <a href="{% url 'adminprofile' %}" class="dropdown-item has-icon"> <i class="far
+										fa-user"></i> Profile
+              </a> 
+              <div class="dropdown-divider"></div>
+              <a href="{% url 'logout_user' %}" class="dropdown-item has-icon text-danger"> <i class="fas fa-sign-out-alt"></i>
+                Logout
+              </a>
+            </div>
+          </li>
+        </ul>
+      </nav>
+      <div class="main-sidebar sidebar-style-2">
+        <aside id="sidebar-wrapper">
+          <div class="sidebar-brand">
+            <a href="{% url 'index' %}"> <img alt="image" src="{% static 'customer/assets/img/logo.png' %} " class="header-logo" /> <span
+                class="logo-name">Paneri</span>
+            </a>
+          </div>
+          <ul class="sidebar-menu">
+            <li class="menu-header">Main</li>
+            <li ><a class="nav-link" href="{% url 'products' %}"><i data-feather="grid"></i><span>Products</span></a></li>
+            <li class="dropdown">
+              <a href="#" class="menu-toggle nav-link has-dropdown"><i
+                  data-feather="shopping-bag"></i><span>Orders</span></a>
+              <ul class="dropdown-menu">
+                <li><a class="nav-link" href="{% url 'vieworders' %}">View Recieved Orders</a></li>
+                {% comment %} <li><a class="nav-link" href="{% url 'cusproduct' %}">Add Customized Orders</a></li> {% endcomment %}
+                <li><a class="nav-link" href="{% url 'completeorder' %}">Completed Orders</a></li>
+                {% comment %} <li><a class="nav-link" href="{% url 'returnorder' %}">Returned Orders</a></li> {% endcomment %}
+                <li><a class="nav-link" href="{% url 'cancelledorder' %}">Cancelled Orders</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="package"></i><span>Purchases</span></a>
+              <ul class="dropdown-menu">
+                <li><a class="nav-link" href="{% url 'supplier' %}">Supplier</a></li>
+                <li><a class="nav-link" href="{% url 'purchase' %}">Purchases</a></li>
+                <li><a class="nav-link" href="{% url 'purchasehistory' %}">Purchases History</a></li>
+              </ul>
+            </li>
+            <li><a href="{% url 'appointment' %}" class="nav-link"><i data-feather="calendar"></i><span>Appointments</span></a></li>
+            <li><a href="{% url 'customers' %}" class="nav-link"><i data-feather="users"></i><span>Customers</span></a></li>
+            <li><a href="{% url 'gallary' %}" class="nav-link"><i data-feather="image"></i><span>Gallary</span></a></li>
+            <li><a href="{% url 'complaints' %}" class="nav-link"><i data-feather="alert-triangle"></i><span>Manage Complaints</span></a></li>
+            <li><a href="{% url 'feedback' %}" class="nav-link"><i data-feather="star"></i><span>Feedback and Ratings</span></a></li>
+            <li><a class="nav-link" href="{% url 'gen_reports' %}"><i data-feather="file-text"></i> <span class="icon-name">Generate Reports</span></a></li>            
+          </ul>
+        </aside>
+      </div>
+       </div>
+      <!-- Main Content -->
+      
+      {% block body %}
+      
+      {% endblock body %}
+  </div>
+        </section>
+      </div>
+     
+
+
+  <!-- General JS Scripts -->
+  <script src="{% static 'customer/assets/js/app.min.js' %} "></script>
+  <!-- JS Libraies -->
+  <script src="{% static 'customer/assets/bundles/sweetalert/sweetalert.min.js' %} "></script>
+  <script src="{% static 'customer/assets/bundles/editable-table/mindmup-editabletable.js' %} "></script>
+  <script src="{% static 'customer/assets/js/page/editable-table.js' %} "></script>
+  <!-- Page Specific JS File -->
+  <script src="{% static 'customer/assets/js/page/sweetalert.js' %} "></script>
+  <!-- Template JS File -->
+  <script src="{% static 'customer/assets/js/scripts.js' %} "></script>
+  <!-- Custom JS File -->
+  <script src="{% static 'customer/assets/js/custom.js' %} "></script>
+  <script>
+    $("#success-alert").fadeTo(2000, 500).fadeOut(2500, function() {
+        $("#success-alert").fadeOut(1000);
+    });
+    </script>
+    <!-- validation -->
+    <script>
+        $(document).ready(function () {
+        {% comment %} $('#sup').parsley(); {% endcomment %}
+          $.ajax({
+            type:"GET",
+            url: "{% url 'noti' %}",
+            data:{
+            
+            },
+            success:function(data){
+            console.log("Success",data);
+            var counter=data[0].counter;
+            if (counter>=1)
+            {
+              $("#lblCartCounter").html(counter)
+            }
+            console.log(counter);
+            html_data="";
+            
+            data.forEach(function (data) {  
+              html_data =html_data + `<div class="dropdown-list-content dropdown-list-icons" style="height:82px;">
+                <a href="" class="dropdown-item"> <span class="dropdown-item-icon bg-danger text-white"> <i
+                      class="fas fa-exclamation-triangle"></i>
+                  </span> <span class="dropdown-item-desc"> ${data.not_title} <span class="time">${data.not_date}</span>
+                  </span>
+                </a> 
+              </div>`;
+            });
+            $("#notif").html(html_data);
+            },
+            error:function(error){
+            console.log("Error");
+            }
+          });
+              });
+          $("#read").click(function(){
+            $.ajax({
+              type:"GET",
+              url: "{% url 'readnot' %}",
+              data:{
+              
+              },
+              success:function(data){
+              console.log("Success",data);
+              
+              },
+              error:function(error){
+              console.log("Error");
+              }
+            });
+
+          });
+    </script>
+
+{% block js %}
+
+{% endblock js %}
+
+{% if messages %}
+    {% for message in messages %}
+    <script>
+		$(document).ready(function(){
+			swal("{{message.tags}}", "{{message}}", "{{message.tags}}");
+			
+		});
+	
+	</script>
+  {% endfor %}
+  {% endif %}
+  
+</body>
+</html>

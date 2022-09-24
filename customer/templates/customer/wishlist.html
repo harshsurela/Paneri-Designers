@@ -1,0 +1,100 @@
+{% extends 'customer/base.html' %}
+{% load static %}
+{% block title %}
+	<title>Wishlist</title>
+	{% endblock title %}
+{% block body %}
+\	<!-- /banner_bottom_agile_info -->
+	<div class="page-head_agile_info_w3l">
+		<div class="container">
+			<h3>WISHLIST</h3>
+			<!--/w3_short-->
+			<div class="services-breadcrumb">
+				<div class="agile_inner_breadcrumb">
+
+					<ul class="w3_short">
+						<li><a href="index.html">Home</a><i>|</i></li>
+						<li>Wishlist</li>
+					</ul>
+				</div>
+			</div>
+			<!--//w3_short-->
+		</div>
+	</div>
+	<!-- Upper Part Same Mostly-->
+
+	<!-- wishlist -->
+	{% if wis %}
+	<div class="new_arrivals_agile_w3ls_info">
+		<div class="container">
+			<h3 class="wthree_text_info">Your Favourite <span>Products</span></h3>
+			{% for p in wis %}
+			<div class="col-md-3 product-men">
+				<div class="men-pro-item simpleCart_shelfItem">
+					<div class="men-thumb-item">
+						<img src="/media/{{p.product_id.product_img}}" alt="" class="pro-image-front">
+						<img src="/media/{{p.product_id.product_img}}" alt="" class="pro-image-back">
+						<div class="men-cart-pro">
+							<div class="inner-men-cart-pro">
+								<a href="{% url 'single' p.product_id.id %}" class="link-product-add-cart">Quick View</a>
+							</div>
+						</div>
+						<a href="{% url 'removewish' p.id %}" ><span class="product-new-top"><i class="fa fa-close"></i></span></a>
+
+					</div>
+					<div class="item-info-product ">
+						<h4><a href="single.html">{{p.product_id.product_name}}</a></h4>
+						<div class="info-product-price">
+							<span class="item_price"></span>
+							
+						</div>
+						{% if request.user.is_authenticated and request.user.is_superuser == False%}
+							<div
+								class="snipcart-details top_brand_home_details item_add single-item hvr-outline-out button2" >
+								<a href="{% url 'addtocart' p.product_id.id %}"><input type="submit" name="submit" value="Add to cart" class="button" /></a>
+							</div>
+							{% else %}
+							<div
+								class="snipcart-details top_brand_home_details item_add single-item hvr-outline-out button2" >
+								<a href="" data-toggle="modal"
+								data-target="#myModal"><input type="submit" name="submit" value="Add to cart" class="button" /></a>
+							</div>
+							{% endif %}
+
+
+					</div>
+				</div>
+			</div>
+			{% endfor %}
+			<div class="clearfix"></div>
+		</div>
+	</div>
+	{% else %}
+	<div class="row" style="margin-top: 100px; margin-bottom: 100px;">
+		<div class="col-md-12">
+			<div class="col-sm-12 empty-cart-cls text-center"> <img src="{% static 'customer/assets/img/heart.png' %} " width="130" height="130"
+					class="img-fluid mb-4 mr-3">
+				<h3><strong>Your Wishlist is Empty</strong></h3><br>
+				<h4>Add something to make me happy :)</h4> <a href="{% url 'home' %}"
+					class="btn btn-primary cart-btn-transform m-3"
+					style="margin-top: 5%;background-color: #4466f2 !important;border-color: #4466f2 !important"
+					data-abc="true">Continue shopping</a>
+			</div>
+		</div>
+	</div>
+	{% endif %}
+	
+	<!-- /wishlist-->
+
+
+	<!-- empty wishlist card-->
+
+	
+
+	<!-- /empty wishlist card-->
+
+
+
+
+
+	{% endblock body %}

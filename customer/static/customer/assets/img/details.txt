@@ -1,0 +1,54 @@
+set images height width according to how it fits.
+1-
+-Modern Umbrella Kurti
+-Size:All,Color:All
+-Description:Modern Umbrella Kurti,Specially Designed and Handmade by us.With great authenticity we offer you this kurti in many materials you like.
+
+2-
+-Stylish Kurti set with dupatta
+-Size:All,Color:All
+-Descriptioin: Black stylish Dress with dupatta.
+
+3-
+-Georgette Updown Top
+-Size:All,Color:All
+-Descriptioin: Latest Georgette Updown top is here! In multi colors and in all Sizes with many designs!
+
+4-
+-Designer Blouse with back design
+-Size:All,Color:All
+-Descriptioin:With embroidery work on blouse having gota patti
+
+5,15,16,31,32-
+Just put this one in those 5 fronts
+33-full background in end,full design page
+6-
+-Back neck design Blouse
+-Size:All,Color:All
+-Descriptioin:Blouse with backneck design,Trending fashion right now!Available in many colors,materials and sizes.
+
+7-
+-Authentic blouse design with embroidery
+-Size:All,Color:All
+-Descriptioin: Sleeveless blouse with embroidery and in new style!Have it in your Own way!
+
+8-
+-Dhoti-Kurta with key-hole
+-Size:All,Color:All
+-Descriptioin: Newly made dhoti kurta design having key-hole design and work on neck!
+
+9-
+-Dhoti kurta with slit
+-Size:All,Color:All
+-Descriptioin: Amazing dhoti kurta set with front slit in dashing design.
+
+10-
+-Anarkali with banarasi dupatta
+-Size:All,Color:All
+-Descriptioin: Fancy anarkali with amazing banarasi dupatta.
+
+14-
+-Anarkali with potli buttons in front
+-Size:All,Color:All
+-Descriptioin: Dashing white full anarkali having front potli buttons.
+

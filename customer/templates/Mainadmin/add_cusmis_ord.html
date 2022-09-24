@@ -1,0 +1,169 @@
+{% extends "Mainadmin/index.html" %}
+{% load static %}
+<!-- Main Content -->
+      {% block body %}
+      <div class="main-content">
+        <section class="section">
+          <div class="section-body">
+            <!-- add content here -->
+             <div class="card">
+                  <div class="card-header">
+                    <h4>Add Customized Product Details</h4>
+                  </div>
+                  <form action="{% url 'addcusproduct' %}" id="sup" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                  <div class="card-body">
+                    <div class="form-group">
+                      <label>Product Name</label>
+                      <input type="text" class="form-control" onKeyPress="return ValidateAlpha(event);" title="Enter only characters" required name=pname>
+                    </div>
+                    <div class="form-group">
+                      <label>Product Description</label>
+                      <textarea class="form-control" name="pdesc"></textarea>
+                    </div>
+                    <div class="form-group">
+                      <label>Product Estimated Price</label>
+                      <input type="text" onkeypress="return isNumberKey(event)" class="form-control" name="price">
+                    </div>
+                    <div class="form-group">
+                      <label>Product Size</label>
+                      <select name="size" id="" class="form-control" required>
+                        <option selected disabled>Choose Product Size</option>
+    
+                        {% for ps in psize %}
+                        <option value="{{ps.id}}">{{ps.details}}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label>Product Color</label>
+                      <select name="color" id="" class="form-control" required>
+                        <option selected disabled>Choose Product Color</option>
+    
+                        {% for pc in pcolor %}
+                        <option value="{{pc.id}}">{{pc.color_name}}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label>Product Image</label>
+                      <input type="file" class="form-control" accept="image/*" name="cpimg">
+                    </div>
+                  <div class="card-footer text-right">
+                    <button class="btn btn-primary mr-1" type="submit" id="swal-4">Add Customized Product</button>
+                    <button class="btn btn-secondary" type="reset">Reset</button>
+                  </div>
+                </div>
+            </form>
+
+              </div>
+                <h3 class="page-title">Added Customized Products </h3>
+            <div class="row">
+              <div class="col-12">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-12 table-responsive">
+                        <table id="order-listing" class="table" cellspacing="0" width="100%">
+                        
+
+                          {% if products %}
+                          <thead>
+                            <tr class="bg-primary ">
+                              
+                              <th>Product Id</th>
+                              <th>Product Name</th>
+                              <th>Estimated Price</th>
+                              <th>Product Size</th>
+                              <th>Product Color</th>
+                              <th></th>
+                              <th></th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                          {% for p in products %}
+                            <tr>
+                              
+                              <td>{{p.id}}</td>
+                              <td>{{p.cus_productName}}</td>
+                              <td>{{p.cus_productPrice}}</td>
+                              <td>{{p.size_id.details}}</td>
+                              <td>{{p.color_id.color_name}}</td>
+                              <td class="text-right">
+                                <a href="{% url 'viewcus' p.id %}"><button class="btn btn-light" >
+                                  <i class="icon-eye text-primary"></i>View </button></a>
+                              </td>
+                              <td class="text-left">
+                                <button class="btn btn-light swal-5" value="{{p.id}}">
+                                  <i class="icon-eye text-primary"></i>Remove </button>
+                              </td>
+                            </tr></table>
+                            <div class="pagination">
+                              <span class="step-links">
+                                  {% if products.has_previous %}
+                                      <a href="?page=1">&laquo; <button class="btn btn-primary"> First</button></a>
+                                      <a href="?page={{ products.previous_page_number }}"><button class="btn btn-primary"> Previous</button></a>
+                                  {% endif %}
+                          
+                                  <span class="current">
+                                      Page {{ products.number }} of {{ products.paginator.num_pages }}.
+                                  </span>
+                          
+                                  {% if products.has_next %}
+                                      <a href="?page={{ products.next_page_number }}"><button class="btn btn-primary">next</button> </a>
+                                      <a href="?page={{ products.paginator.num_pages }}"><button class="btn btn-primary">Previous &raquo;</button></a>
+                                  {% endif %}
+                              </span>
+                          </div>
+                        {% endfor %}
+                        
+                          {% else %}
+                        <h6 class="text-center"> <b> No Records....</b></h6>
+
+                        {% endif %}
+                
+                            
+                    
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            <!-- end content here -->
+          </div>
+        </section>
+      </div>
+      <footer class="main-footer">
+        <div class="footer-right">
+        </div>
+      </footer>  
+      {% endblock body %}
+      {% block js %}
+      <script>
+      $(".swal-5").click(function () {
+        swal({
+        title: 'Are you sure?',
+        text: 'Once deleted, you will not be able to recover this record!',
+        icon: 'warning',
+        buttons: true,
+        dangerMode: true,
+      })
+        .then((willDelete) => {
+          if (willDelete) {
+            
+            swal('Poof! Record has been deleted!', {
+              icon: 'success',
+            });
+            let url='{% url "delcus" 123 %}';
+            let id=$(this).attr("value");
+            console.log(id);
+            window.location.href=url.replace('123', id);
+          } else {
+            swal('Your Record is safe!');
+          }
+        });
+      });
+    </script> 
+      {% endblock js %}
+
+</body>
+</html>

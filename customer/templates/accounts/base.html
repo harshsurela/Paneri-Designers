@@ -1,0 +1,40 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  	<!--tags -->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="keywords" content="Paneri Designers" />
+	<!--/ tags -->
+  <link rel="apple-touch-icon" sizes="76x76" href="{% static 'customer/assets/img/apple-icon.png' %} ">
+  <link rel="icon" type="image/png" href="{% static 'customer/assets/img/favicon.png' %} ">
+  <title>
+    {% block title %}
+      
+    {% endblock title %}
+  </title>
+   
+  <!-- Nucleo Icons -->
+  <link href="{% static 'customer/assets/css/nucleo-icons.css' %} " rel="stylesheet" />
+  <link href="{% static 'customer/assets/css/nucleo-svg.css' %} " rel="stylesheet" />
+<script src="{% static 'customer/assets/js/jquery-3.6.0.min.js' %}" type="text/javascript"></script>
+<script type="text/javascript" src="{% static 'customer/assets/js/page/sweetalert.js' %} "></script>
+<script type="text/javascript" src="{% static 'customer/assets/js/page/sweetalert.min.js' %} "></script>
+
+<!-- CSS Files -->
+  <link id="pagestyle" href="{% static 'customer/assets/css/material-dashboard.css' %} " rel="stylesheet" />
+</head>
+{% block body %}
+  
+{% endblock body %}
+<script src="{% static 'customer/assets/js/core/popper.min.js' %} "></script>
+
+<script src="{% static 'customer/assets/js/core/bootstrap.min.js' %} "></script>
+<script src="{% static 'customer/assets/js/plugins/perfect-scrollbar.min.js' %} "></script>
+<!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
+<script src="{% static 'customer/assets/js/material-dashboard.min.js' %} "></script>
+{% block js %}{% endblock js %}
+</body>
+
+</html>

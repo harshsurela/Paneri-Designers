@@ -1,0 +1,103 @@
+{% extends "Mainadmin/index.html" %}
+{% load static %}
+{% block body %}
+      <!-- Main Content -->
+      <div class="main-content">
+        <section class="section">
+          <div class="section-body">
+            <!-- add content here -->
+             <div class="card">
+                  <div class="card-header">
+                    <h4>Customer Details</h4>
+                  </div>
+                  <div class="card-body">
+                    <div class="form-group">
+                      <label>Customer Name</label>
+                      <input type="text" class="form-control" onKeyPress="return ValidateAlpha(event);" title="Enter only characters" value="{{customer.first_name}} {{customer.last_name}}" readonly>
+                    </div>
+                    <div class="form-group">
+                      <label>Customer Profile Image</label>
+                      <div style="width: 200px; max-width: 300px;">
+                      <img src="/media/{{customer.profile}}" class="img-thumbnail rounded" alt="Image Here">
+                      </div>
+                    </div>
+                    
+                    <div class="form-group">
+                      <label>Customer Pincode</label>
+                      <input type="text" class="form-control" value="{{customer.pincode}}" readonly>
+                    </div>
+                    <div class="form-group">
+                      <label>Contact Number</label>
+                      <input type="text" onkeypress="return isNumberKey(event)" class="form-control" value="{{customer.Cus_phone}}" readonly>
+                    </div>
+                    <div class="form-group">
+                      <label>Email Id</label>
+                      <input type="text" class="form-control" value="{{customer.user_id.email}}" readonly>
+                    </div>
+                    <div class="form-group">
+                      <label>Address</label>
+                      <input type="text" class="form-control" value="{{customer.cus_add1}}" readonly>
+                    </div>
+                    <hr>
+                      <h4>Past Orders</h4>
+                      <hr>
+                    </div>
+              <div class="card-body">
+                  <div class="table-responsive">
+                    {% if orders %}
+                      
+                    <table class="table table-striped">
+                      <tr>
+                        <th>Order Id</th>
+                        <th>Order Status</th>
+                        <th>Order Date</th>
+                        <th>Total Price</th>
+                        <th>Payment Status</th>
+                        <th>Ship To </th>
+                        <th>
+                         More Details
+                        </th>
+                      </tr>
+                      {% for o,m in orders %}
+                        
+                      <tr>
+                        <td>{{o.id}}</td>
+                        <td class="text-truncate">
+                          {{o.sales_id.sales_status}}
+                        </td>
+                        <td>{{o.sales_id.sales_date}}</td>
+                        <td>{{m}}</td>
+                        <td>{% if o.sales_id.payment_status == "paid" %}
+                          <label class="badge badge-success">{{o.sales_id.payment_status}}</label> 
+                            {% elif o.sales_id.payment_status == "pending" %}
+                          <label class="badge badge-warning">{{o.sales_id.payment_status}}</label> 
+                            {% elif o.sales_id.payment_status == "cancelled" %}
+                          <label class="badge badge-danger">{{o.sales_id.payment_status}}</label> 
+
+                          {% endif %}</td>
+                        <td>{{o.sales_id.userbase.area_id.area_name}}</td>
+                        <td><a href="{% url 'det_rec_ord' o.sales_id.id %}" class="btn btn-outline-primary">View</a></td>
+                      </tr> 
+                      {% endfor %} 
+                    </table>
+                    {% else %}
+                    <h4>No Records Found</h4>
+                    {% endif %}
+
+                  </div>
+              </div>
+                  </div>
+                </div>
+            <!-- content end here -->
+          </div>
+        </section>
+      </div>
+      <footer class="main-footer">
+        <div class="footer-right">
+        </div>
+      </footer>
+    </div>
+  </div>
+  {% endblock %}
+</body>
+</html>

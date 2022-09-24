@@ -1,0 +1,100 @@
+{% extends "Mainadmin/index.html" %}
+{% load static %}
+{% block body %}
+     <!-- Main Content -->
+     <div class="main-content">
+      <section class="section">
+        <div class="section-body">
+          <!-- add content here -->
+          <div class="row">
+            <div class="col-6 col-md-6 col-lg-6">
+              <div class="card">
+                <div class="card-header">
+                  <h4>Add New Raw Materials</h4>
+                </div>
+                <form method="post" action="{% url 'addraw' %}">
+                  {% csrf_token %}
+                <div class="card-body">
+                  <input type="text" placeholder="Raw Material Name" class="form-control" name="raw">
+                  <button type="submit" class="btn btn-primary" style="margin-top: 20px;" > Add Raw Material </button>
+                </div>
+              </form>
+              </div>
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="col-12 col-md-12 col-lg-12">
+              <div class="card">
+                <div class="card-header">
+                  <h4>Added Materials</h4>
+                </div>
+                <div class="card-body">
+                  <div class="table-responsive">
+                    {% if rm %}
+                    <table class="table table-bordered table-md">
+                      <tr>
+                        <th>Id.</th>
+                        <th>Name</th>
+                        <th>Action</th>
+
+                      </tr>
+                      {% for r in rm %}
+                      <tr>
+                        <td>{{r.id}}</td>
+                        <td>{{r.raw_name}}</td>
+                        <td><button class="btn btn-primary raw" value="{{r.id}}" >Delete</button></td>
+                      </tr>
+                      {% endfor %}
+                    </table>
+                    {% else %}
+                    <h4> No Records </h4>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- end content here -->
+        </div>
+      </section>
+    </div>
+<!-- end main content -->
+      <footer class="main-footer">
+        <div class="footer-right">
+        </div>
+      </footer>
+    </div>
+  </div>
+  
+  {% endblock body%}
+  {% block js %}
+  <script>
+    $(".raw").click(function () {
+      console.log("clickkkkk")
+      swal({
+      title: 'Are you sure?',
+      text: 'Once deleted, you will not be able to recover this record!',
+      icon: 'warning',
+      buttons: true,
+      dangerMode: true,
+    })
+      .then((willDelete) => {
+        if (willDelete) {
+          
+          swal('Poof! Record has been deleted!', {
+            icon: 'success',
+          });
+          var url="{% url 'delraw' 123 %}";
+          var id=$(this).attr("value");
+          console.log(id);
+          window.location.href=url.replace('123', id);
+        } else {
+          swal('Your Record is safe!');
+        }
+      });
+    });
+  </script>
+  {% endblock js %}
+

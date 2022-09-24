@@ -1,0 +1,151 @@
+{% extends 'customer/base.html' %}
+{% load static %}
+{% load my_filters %}
+{% block title %}
+	<title>Searched Products</title>
+	{% endblock title %}
+{% block body %}
+	<!-- /banner_bottom_agile_info -->
+	<div class="page-head_agile_info_w3l">
+		<div class="container">
+			<h3>This <span>is</span> What we Found!!</h3>
+			<!--/w3_short-->
+			<div class="services-breadcrumb">
+				<div class="agile_inner_breadcrumb">
+
+					<ul class="w3_short">
+						<li><a href="index.html">Home</a><i>|</i></li>
+						<li>Results of " Searched data "
+						</li>
+					</ul>
+				</div>
+			</div>
+			<!--//w3_short-->
+		</div>
+	</div>
+
+	<!-- banner-bootom-w3-agileits -->
+	<!-- banner-bootom-w3-agileits -->
+	<div class="banner-bootom-w3-agileits">
+		<div class="container">
+			<!-- mens -->
+			{% if context %}
+			<div class="single-pro">
+				{% for p in context  %}
+				<div class="col-md-3 col-lg-3 d-flex product-men">
+					<div class="men-pro-item simpleCart_shelfItem">
+						<div class="men-thumb-item text-center all">
+							<img src="/media/{{p.product_img}}"  alt="" class="pro-image-front dimg" style="height:275px">
+							<img src="/media/{{p.product_img}}"  alt="" class="pro-image-back bimg" style="height:275px;">
+							<div class="men-cart-pro">
+								<div class="inner-men-cart-pro">
+									<a href="{% url 'single' p.id %}" class="link-product-add-cart">Quick View</a>
+								</div>
+							</div>
+							{% comment %} <span class="product-new-top" >New</span> {% endcomment %}
+
+						</div>
+						<div class="item-info-product d-flex" style="
+						height:118px;">
+							<h5><a style="font-size: 0.9em;color: #fc636b;text-decoration: none;font-weight: 600;" class="name" >{{p.product_name}}</a></h5>
+							<div class="info-product-price">
+								{% if p.price|calcprice:p.discount != p.price %}
+								<span class="item_price">&#8377;{{p.price|calcprice:p.discount}}</span>
+								<del>&#8377;{{p.price}}</del>
+								{% else %}
+								<span class="item_price">&#8377;{{p.price}}.0</span>
+								{% endif %}
+							</div>
+							{% if request.user.is_authenticated and request.user.is_superuser == False%}
+							<div
+								class="snipcart-details top_brand_home_details item_add single-item hvr-outline-out button2" >
+								<a href="{% url 'addtocart' p.id %}"><input type="submit" name="submit" value="Add to cart" class="button" /></a>
+							</div>
+							{% else %}
+							<div
+								class="snipcart-details top_brand_home_details item_add single-item hvr-outline-out button2" >
+								<a href="" data-toggle="modal"
+								data-target="#myModal"><input type="submit" name="submit" value="Add to cart" class="button" /></a>
+							</div>
+							{% endif %}
+
+						</div>
+					</div>
+				</div>
+				{% endfor %}
+
+				<div class="clearfix"></div>
+			</div>
+			{% else %}
+			
+			<div class="row" style="margin-top: 100px; margin-bottom: 100px;">
+				<div class="col-md-12">
+					<div class="col-sm-12 empty-cart-cls text-center"> <img src="{% static 'customer/assets/img/notfound.png' %}" width="130" height="170"
+							class="img-fluid mb-4 mr-3">
+						<h3><strong>Sorry! We Couldn't find anything What you were looking for..!</strong></h3>
+						<small><h4 style="margin-top: 10px;">Try Using a different Keyword <br>or Check Our Products where you can find What you want!</h4></small> <a href="{% url 'womens' %}"
+							class="btn btn-primary cart-btn-transform m-3"
+							style="margin-top: 3%;background-color: #4466f2 !important;border-color: #4466f2 !important"
+							data-abc="true">Check our Products</a>
+					</div>
+				</div>
+			</div>
+			
+			{% endif %}
+		</div>
+	</div>
+			
+
+			
+	
+		
+	
+{% endblock body %}
+	<script>
+		// You can also use "$(window).load(function() {"
+		$(function () {
+			// Slideshow 4
+			$("#slider3").responsiveSlides({
+				auto: true,
+				pager: true,
+				nav: false,
+				speed: 500,
+				namespace: "callbacks",
+				before: function () {
+					$('.events').append("<li>before event fired.</li>");
+				},
+				after: function () {
+					$('.events').append("<li>after event fired.</li>");
+				}
+			});
+		});
+	</script>
+	<!-- Custom-JavaScript-File-Links -->
+	<!---->
+	<script type="text/javascript">
+		jQuery(document).ready(function ($) {
+			$(".scroll").click(function (event) {
+				event.preventDefault();
+				$('html,body').animate({ scrollTop: $(this.hash).offset().top }, 1000);
+			});
+		});
+	</script>
+	<!-- here stars scrolling icon -->
+	<script type="text/javascript">
+		$(document).ready(function () {
+			/*
+				var defaults = {
+				containerID: 'toTop', // fading element id
+				containerHoverID: 'toTopHover', // fading element hover id
+				scrollSpeed: 1200,
+				easingType: 'linear' 
+				};
+			*/
+
+			$().UItoTop({ easingType: 'easeOutQuart' });
+
+		});
+	</script>
+	<!-- //here ends scrolling icon -->
+
+	<!-- for bootstrap working -->

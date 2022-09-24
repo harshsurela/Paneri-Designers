@@ -1,0 +1,243 @@
+{% extends 'customer/base.html' %}
+{% load static %}
+{% load my_filters %}
+{% block title %}
+	<title>Checkout</title>
+	{% endblock title %}
+{% block body %}
+
+<style>
+  * {
+    box-sizing: border-box;
+  }
+
+  .row {
+    display: -ms-flexbox;
+    /* IE10 */
+    display: flex;
+    -ms-flex-wrap: wrap;
+    /* IE10 */
+    flex-wrap: wrap;
+    margin: 0 -16px;
+  }
+
+  .col-25 {
+    -ms-flex: 25%;
+    /* IE10 */
+    flex: 25%;
+  }
+
+  .col-50 {
+    -ms-flex: 50%;
+    /* IE10 */
+    flex: 50%;
+  }
+
+  .col-75 {
+    -ms-flex: 75%;
+    /* IE10 */
+    flex: 75%;
+  }
+
+  .col-25,
+  .col-50,
+  .col-75 {
+    padding: 0 16px;
+  }
+
+  .containerx {
+    background-color: #f2f2f2;
+    padding: 5px 20px 15px 20px;
+    border: 1px solid lightgrey;
+    border-radius: 3px;
+  }
+
+  input[type=text] {
+    width: 100%;
+    margin-bottom: 20px;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+  }
+
+  label {
+    margin-bottom: 10px;
+    display: block;
+  }
+
+  .icon-containerx {
+    margin-bottom: 20px;
+    padding: 7px 0;
+    font-size: 24px;
+  }
+
+  .btn {
+    background-color: #04AA6D;
+    color: white;
+    padding: 12px;
+    margin: 10px 0;
+    border: none;
+    width: 100%;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 17px;
+  }
+
+  .btn:hover {
+    background-color: #45a049;
+  }
+
+  a {
+    color: #2196F3;
+  }
+
+  hr {
+    border: 1px solid lightgrey;
+  }
+
+  span.price {
+    float: right;
+    color: grey;
+  }
+
+  /* Responsive layout - when the screen is less than 800px wide, make the two columns stack on top of each other instead of next to each other (also change the direction - make the "cart" column go on top) */
+  @media (max-width: 800px) {
+    .row {
+      flex-direction: column-reverse;
+    }
+
+    .col-25 {
+      margin-bottom: 20px;
+    }
+  }
+</style>
+  <!-- /banner_bottom_agile_info -->
+  <div class="page-head_agile_info_w3l">
+    <div class="container">
+      <h3>CHECKOUT</h3>
+      <!--/w3_short-->
+      <div class="services-breadcrumb">
+        <div class="agile_inner_breadcrumb">
+
+          <ul class="w3_short">
+            <li><a href="index.html">Home</a><i>|</i></li>
+            <li>Checkout</li>
+          </ul>
+        </div>
+      </div>
+      <!--//w3_short-->
+    </div>
+  </div>
+  <!-- Upper Part Same Mostly-->
+
+  <!-- checkout -->
+
+  <div class="row" style="margin-top: 100px; margin-left: 100px; margin-right: 100px;">
+    <div class="col-75">
+      <div class="containerx">
+          <div class="row">
+            {% comment %} <form method="post" action="{% url 'placeorder' %}"> {% endcomment %}
+              <form method="post" action="{% url 'placeorder' %}">
+                {% csrf_token %}
+            <div class="col-50" style="margin-top: 20px;">
+              <h3>Billing Address</h3>
+              
+              <label style="margin-top: 20px;" for="fname"><i class="fa fa-user"></i> Full Name</label>
+              <input type="text" class="form-control" id="fname" value="{{cus.first_name}} {{cus.last_name}}" placeholder="John M. Doe" readonly>
+              <label for="email"><i class="fa fa-envelope"></i> Email</label>
+              <input type="text"  value="{{request.user.email}}" class="form-control" placeholder="john@example.com" readonly>
+              <label for="adr"><i class="fa fa-address-card-o"></i> Address</label>
+              <input type="text" id="adr" value="{{cus.cus_add1}}" class="form-control" placeholder="542 W. 15th Street" readonly>
+              <label for="adr2" id="adrl"><i class="fa fa-address-card-o"></i> Address 2</label>
+              <input type="text" id="adr2" value="" name="add2" class="form-control" placeholder="542 W. 15th Street">
+
+              <div class="row">
+
+                <div class="col-50">
+                  <label for="country">Country</label>
+                  <select class="form-control" readonly>
+                    <option value="Choose Country" selected disabled>{{cus.area_id.city_id.state_id.country_id.country_name}}</option>
+                    
+                  </select>
+                </div>
+                <div class="col-50">
+                  <label for="state">State</label>
+                  <select class="form-control" readonly>
+                    <option value="Choose State" selected>{{cus.area_id.city_id.state_id.state_name}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="row" style="margin-top: 15px;">
+                <div class="col-50">
+                  <label for="city">City</label>
+                  <select class="form-control" readonly>
+                    <option value="Choose City" selected>{{cus.area_id.city_id.city_name}}</option>
+                    
+                  </select>
+                </div>
+                <div class="col-50">
+                  <label for="area">Area</label>
+                  <select class="form-control" readonly>
+                    <option value="Choose Area" selected>{{cus.area_id.area_name}}</option>
+                  </select>
+                </div>
+                <div class="col-50">
+                  <label for="zip" style="margin-top: 20px;">Zip</label>
+                  <input type="text" class="form-control" id="zip" name="zip" value="{{cus.pincode}}" readonly>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <label>
+            <input type="checkbox" id="check"  name="sameadr"> Shipping address same as billing
+          </label>
+          <h4 style="margin-top: 20px; margin-bottom: 20px;">Short Note </h4>
+        <textarea style="resize: none; width: 100%;" name="note" class="form-control" placeholder="Tell us brief about your products"></textarea>
+          <h3 style="margin-top: 30px;">Payment Mode</h3>
+            <label style="margin-top: 30px;">
+            <input type="radio" name="pay" value="Cash on Delivery"> Cash on Delivery <input type="radio" style="margin-left: 50px;" name="pay" value="Net Banking"> Net Banking</label>
+          <input type="submit" value="PLACE ORDER" class="btn">
+       
+      </div>
+    </div>
+    <div class="col-25">
+      <div class="containerx">
+        <h4 style="margin-top: 20px;">Cart <span class="price" style="color:black"><i class="fa fa-shopping-cart"></i>
+            <b>{{mycart | length}}</b></span></h4>
+            
+            {% for m in mycart %}
+           <p><a href="">{{m.product_id.product_name |slice:":15"}}</a> <span  class="price" >&#8377;{% calcdisc m.product_id.price m.product_id.discount m.cart_qty %}</span></p>
+            <input type="hidden" name="eachprice{{forloop.counter}}" value="{% calcdisc m.product_id.price m.product_id.discount m.cart_qty %}" />
+           {% endfor %}
+        <hr>
+        <p>Total <span class="price" name=""  style="color:black">&#8377;{{final_price}}</span></p>
+        <input type="hidden" name="final_price" value="{{final_price}}" />
+        
+      </form>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- /checkout-->
+
+{% endblock body %}
+{% block js %}
+<script>
+  console.log("IN Checkout");
+  $(document).ready(function(){
+  $("#check").click(function(){
+    if(this.checked){
+    $("#adr2").hide();
+    $("#adrl").hide();
+    }
+    else
+    {
+      $("#adr2").show();
+    $("#adrl").show();
+    }
+  });
+});
+</script>
+{% endblock js %}

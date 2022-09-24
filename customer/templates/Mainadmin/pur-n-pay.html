@@ -1,0 +1,186 @@
+{% extends "Mainadmin/index.html" %}
+{% load static %}
+{% block body %}
+     <!-- Main Content -->
+     <div class="main-content">
+      <section class="section">
+        <div class="section-body">
+          <!-- add content here -->
+          <div class="row">
+            <div class="col-6 col-md-6 col-lg-6">
+              <div class="card">
+                <form action="{% url 'savepur' %}" id="pur" method="post">
+                  {% csrf_token %}
+                <div class="card-header">
+                  <h4>Select Supplier</h4>
+                </div>
+                <div class="card-body">
+                  <select class="form-control" name="sup">
+                    {% for s in supp  %}
+                    <option value="{{s.id}}">{{s.sup_name}}</option>
+                    
+                    {% endfor %}
+                  </select>
+                  <button type="button" class="btn btn-primary" style="margin-top: 20px;" data-toggle="modal"
+                    data-target="#exampleModalCenter1"> Add Raw Material </button>
+                </div>
+              </div>
+            </div>
+            <div class="col-6 col-md-6 col-lg-6">
+              <div class="card">
+                <div class="card-header">
+                  <h4>Select Date</h4>
+                </div>
+                <div class="card-body">
+                 
+                    <input class="form-control" name="purdate" type="date" required>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="col-12 col-md-12 col-lg-12">
+              <div class="card">
+                <div class="card-header">
+                  <h4>Selected Materials</h4>
+                </div>
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table id="tab" class="table table-bordered table-md">
+                      <tr>
+
+                        <th>Name</th>
+                        <th>Quantity</th>
+                        <th>Price (Each)</th>
+                        <th>Unit of Measurement</th>
+                        <th>Total Amount</th>
+                        <th></th>
+                      </tr>
+                     
+                    
+                    </table>
+                  </div>
+                  <button type="submit" class="btn btn-primary pull-right">Send</button>
+                </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-6 col-md-3 col-lg-3">
+              <div class="card">
+                <div class="card-header">
+                  <h4>Extra</h4>
+                </div>
+                <div class="card-body">
+                  <a href="{% url 'addrm' %}" type="button" class="btn btn-primary"> Add Raw Material </a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- end content here -->
+        </div>
+      </section>
+      <!-- Vertically Center -->
+      <div class="modal fade" id="exampleModalCenter1" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalCenterTitle">Add Raw Material</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form id="sup" >
+                <label>Material</label>
+                <select class="form-control"id="raw" style="margin-top: 10px;">
+                  {% for r in raw %}
+                  <option value="{{r.id}}" data-raw="{{r.id}}" class="rawmat"> {{r.raw_name}}</option>
+                  {% endfor %}
+                </select>
+                <label style="margin-top:10px ;">Quantity</label>
+                <input class="form-control" id="qty" min="1" type="text" onkeypress="return isNumberKey(event)">
+                <label style="margin-top:10px ;">Price (Each)</label>
+                <input class="form-control" id="price" type="text" onkeypress="return isNumberKey(event)">
+                <label style="margin-top:10px ;">Unit of Measurement</label>
+                <select class="form-control" id="unit" style="margin-top: 10px;">
+                  {% for u in un  %}
+                  <option value={{u.id}} class="uni">{{u.unitOfmes}}</option>
+                  {% endfor %}
+                </select>
+              </form>
+            </div>
+            <div class="modal-footer bg-whitesmoke br">
+              <button type="button" class="btn btn-primary" data-dismiss="modal"  onclick="addraw()">Add</button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- end modal-->
+    </div>
+<!-- end main content -->
+      <footer class="main-footer">
+        <div class="footer-right">
+        </div>
+      </footer>
+    </div>
+  </div>
+  
+  {% endblock body%}
+
+  {% block js %}
+  <script>
+    var form=document.getElementById("sup");
+    var tab=document.getElementById("tab");
+    $(document).ready(function(){
+
+      $("#tab").on('click','.btnDelete',function(){
+      //console.log(btn.dataset.raw);
+      $(`input[data-raw="${this.dataset.raw}"`).remove();
+      console.log("the data is ",this.dataset.raw)
+      dataval=this.value
+      console.log("btn value is ",dataval)
+      var dsb=form.children.raw.options;
+      $(dsb).each(function(){
+        console.log(this.value);
+        if(this.value == dataval && this.hasAttribute('disabled'))
+        {
+          this.removeAttribute('disabled');
+          console.log(this,"removed");         
+        }
+
+      });
+      //console.log(dsb)
+
+        //console.log($(this).closest('tr').children(':first-child'));
+        $(this).closest('tr').remove();
+      });
+    });
+    function addraw()
+    {
+      console.log(form.children.raw.selectedOptions[0].innerText);
+      console.log(form.children.qty.value);
+      console.log(form.children.price.value);
+      console.log(form.children.unit.selectedOptions[0].innerText);
+      tab.innerHTML=tab.innerHTML+`<tr>
+        <td>${form.children.raw.selectedOptions[0].innerText}</td>
+        <td>${form.children.qty.value}</td>
+        <td>${form.children.price.value}</td>
+        <td>${form.children.unit.selectedOptions[0].innerText}</td>
+        <td>${form.children.qty.value*form.children.price.value}</td>
+        <td><button class="btn btn-primary btnDelete" data-raw="${form.children.raw.selectedOptions[0].value}"  value="${form.children.raw.selectedOptions[0].value}" >Delete</button></td>
+
+      </tr>`;
+      $(form.children.raw.selectedOptions[0]).prop("disabled",true)
+        var form2=document.getElementById("pur");
+        form2.innerHTML=form2.innerHTML+`<input type="hidden"  data-raw="${form.children.raw.selectedOptions[0].value}" value="${form.children.raw.selectedOptions[0].value},${form.children.qty.value},${form.children.price.value},${form.children.unit.selectedOptions[0].value}" name="purdet" />`;
+      form.reset();
+      
+    }
+    
+  </script>
+  {% endblock js %}

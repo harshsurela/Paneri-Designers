@@ -1,0 +1,224 @@
+{% extends 'customer/base.html' %}
+{% load static %}
+{% load my_filters %}
+{% block title %}
+<title>Paneri Designers</title>
+
+{% endblock title %}
+
+
+{% block body %}
+<style>
+	.carousel .item{    
+		background:-webkit-linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url("{% static 'customer/assets/img/5.jpg' %}") no-repeat;
+		background:-moz-linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url("{% static 'customer/assets/img/5.jpg' %}") no-repeat;
+		background:-ms-linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url("{% static 'customer/assets/img/5.jpg' %}") no-repeat; 
+		background:linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url("{% static 'customer/assets/img/5.jpg' %}") no-repeat;
+		background-size:cover;	 
+	}
+	.carousel .item2{    
+		background:-webkit-linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url("{% static 'customer/assets/img/15.jpg' %}") no-repeat;
+		background:-moz-linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url("{% static 'customer/assets/img/15.jpg' %}") no-repeat;
+		background:-ms-linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url("{% static 'customer/assets/img/15.jpg' %}") no-repeat; 
+		background:linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url("{% static 'customer/assets/img/15.jpg' %}") no-repeat;
+		background-size:cover;	 
+	}
+	.carousel .item3{    
+		background:-webkit-linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url("{% static 'customer/assets/img/16.jpg' %}") no-repeat;
+		background:-moz-linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url("{% static 'customer/assets/img/16.jpg' %}") no-repeat;
+		background:-ms-linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url("{% static 'customer/assets/img/16.jpg' %}") no-repeat; 
+		background:linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url("{% static 'customer/assets/img/16.jpg' %}") no-repeat;
+		background-size:cover;	 
+	}
+	.carousel .item4{    
+		background:-webkit-linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url("{% static 'customer/assets/img/31.jpg' %}") no-repeat;
+		background:-moz-linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url("{% static 'customer/assets/img/31.jpg' %}") no-repeat;
+		background:-ms-linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url("{% static 'customer/assets/img/31.jpg' %}") no-repeat; 
+		background:linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url("{% static 'customer/assets/img/31.jpg' %}") no-repeat;
+		background-size:cover;	 
+	}
+	.carousel .item5{    
+		background:-webkit-linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url("{% static 'customer/assets/img/32.jpg' %}") no-repeat;
+		background:-moz-linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url("{% static 'customer/assets/img/32.jpg' %}") no-repeat;
+		background:-ms-linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url("{% static 'customer/assets/img/32.jpg' %}") no-repeat; 
+		background:linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url("{% static 'customer/assets/img/32.jpg' %}") no-repeat;
+		background-size:cover;	 
+	}
+</style>
+	<!-- banner -->
+	<div id="myCarousel" class="carousel slide" data-ride="carousel">
+		<!-- Indicators -->
+		<ol class="carousel-indicators">
+			<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+			<li data-target="#myCarousel" data-slide-to="1" class=""></li>
+			<li data-target="#myCarousel" data-slide-to="2" class=""></li>
+			<li data-target="#myCarousel" data-slide-to="3" class=""></li>
+			<li data-target="#myCarousel" data-slide-to="4" class=""></li>
+		</ol>
+		<div class="carousel-inner" role="listbox">
+			<div class="item active">
+				<div class="container">
+					<div class="carousel-caption">
+						<h3>The Biggest <span>Sale</span></h3>
+						<p>Special for today</p>
+						<a class="hvr-outline-out button2" href="{% url 'womens' %}">Shop Now </a>
+					</div>
+				</div>
+			</div>
+			<div class="item item2">
+				<div class="container">
+					<div class="carousel-caption">
+						<h3>Summer <span>Collection</span></h3>
+						<p>New Arrivals On Sale</p>
+						<a class="hvr-outline-out button2" href="{% url 'womens' %}">Shop Now </a>
+					</div>
+				</div>
+			</div>
+			<div class="item item3">
+				<div class="container">
+					<div class="carousel-caption">
+						<h3>The Biggest <span>Sale</span></h3>
+						<p>Special for today</p>
+						<a class="hvr-outline-out button2" href="{% url 'womens' %}">Shop Now </a>
+					</div>
+				</div>
+			</div>
+			<div class="item item4">
+				<div class="container">
+					<div class="carousel-caption">
+						<h3>Summer <span>Collection</span></h3>
+						<p>New Arrivals On Sale</p>
+						<a class="hvr-outline-out button2" href="{% url 'womens' %}">Shop Now </a>
+					</div>
+				</div>
+			</div>
+			<div class="item item5">
+				<div class="container">
+					<div class="carousel-caption">
+						<h3>The Biggest <span>Sale</span></h3>
+						<p>Special for today</p>
+						<a class="hvr-outline-out button2" href="{% url 'womens' %}">Shop Now </a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+			<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+			<span class="sr-only">Previous</span>
+		</a>
+		<a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+			<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+			<span class="sr-only">Next</span>
+		</a>
+		<!-- The Modal -->
+	</div>
+	<!-- //banner -->
+	<div class="banner_bottom_agile_info">
+		<div class="container">
+			<div class="banner_bottom_agile_info_inner_w3ls">
+				<div class="col-md-6 wthree_banner_bottom_grid_three_left1 grid">
+					<figure class="effect-roxy">
+						<img src="{% static 'customer/assets/img/15.jpg' %}" alt=" " class="img-responsive" />
+						<figcaption>
+							<h3><span>D</span>esigns <span>F</span>or</h3>
+							<p>New Arrivals</p>
+						</figcaption>
+					</figure>
+				</div>
+				<div class="col-md-6 wthree_banner_bottom_grid_three_left1 grid" >
+					<figure class="effect-roxy" style="height: 295px;">
+						<img src="{% static 'customer/assets/img/16.jpg' %}" alt=" " class="img-responsive" />
+						<figcaption>
+							<h3><span>D</span>esigns <span>F</span>or</h3>
+							<p>New Arrivals</p>
+						</figcaption>
+					</figure>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+		</div>
+	</div>
+	
+	<!-- /new_arrivals -->
+	<div class="new_arrivals_agile_w3ls_info" style="padding:0px;">
+		<div class="container">
+			<h3 class="wthree_text_info">Our <span>Products</span></h3>
+				{% if context %}
+				{% for p  in context  %}
+				
+				<div class="col-md-3 col-lg-3 d-flex product-men ">
+					<div class="men-pro-item simpleCart_shelfItem">
+						<div class="men-thumb-item text-center">
+							<img src="/media/{{p.product_img}}"  alt="" class="pro-image-front" style="height:275px">
+							<img src="/media/{{p.product_img}}"  alt="" class="pro-image-back" style="height:275px;">
+							<div class="men-cart-pro">
+								<div class="inner-men-cart-pro">
+									<a href="{% url 'single' p.id %}" class="link-product-add-cart">Quick View</a>
+								</div>
+							</div>
+							{% comment %} <span class="product-new-top" >New</span> {% endcomment %}
+
+						</div>
+						<div class="item-info-product d-flex" style="
+						height:118px;">
+							<h5><a style="font-size: 0.9em;color: #fc636b;text-decoration: none;font-weight: 600;" >{{p.product_name}}</a></h5>
+							<div class="info-product-price">
+								{% if p.price|calcprice:p.discount != p.price %}
+								<span class="item_price">&#8377;{{p.price|calcprice:p.discount}}</span>
+								<del>&#8377;{{p.price}}</del>
+								{% else %}
+								<span class="item_price">&#8377;{{p.price}}</span>
+								{% endif %}
+							</div>
+							{% if p.qty_on_hand == 0 %}
+							<label name="accept" class="bg-danger badge badge-danger"  value="accepted"  style="border:none;color:white;">Out Of Stock</label>
+
+							{% else %}
+							{% if user.is_authenticated %}
+							<div
+								class="snipcart-details top_brand_home_details item_add single-item hvr-outline-out button2" >
+								<a href="{% url 'addtocart' p.id %}"><input type="submit" name="submit" value="Add to cart" class="button" /></a>
+							</div>
+							{% else %}
+							<div
+								class="snipcart-details top_brand_home_details item_add single-item hvr-outline-out button2" >
+								<a href="" data-toggle="modal" data-target="#myModal"><input type="submit" name="submit" value="Add to cart" class="button" /></a>
+							</div>
+							{% endif %}
+							{% endif %}
+							
+
+						</div>
+					</div>
+				</div>
+			
+				{% endfor %}
+				{% endif %}
+				
+
+			
+			
+			
+		</div>
+		<div class="container">
+		<div class="row" style="margin-left: 500px; margin-bottom: 100px;">
+			
+			<div class="clearfix"></div>
+		</div>
+	</div>
+	<br>
+	<!-- //new_arrivals -->
+	<!-- /we-offer -->
+	<div class="sale-w3ls">
+		<div class="container">
+			<h6 style="color: black;">We Create <span>Finest</span> Of Your Clothes </h6>
+
+			<a class="hvr-outline-out button2" href="{% url 'womens' %}">Shop Now </a>
+		</div>
+	</div>
+	<!-- //we-offer -->
+	
+	{% endblock body %}
+	{% block js %}
+	
+	{% endblock js %}

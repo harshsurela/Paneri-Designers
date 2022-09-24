@@ -1,0 +1,90 @@
+{% extends "Mainadmin/index.html" %}
+{% load static %}
+{% block body %}
+      <!-- Main Content -->
+      <div class="main-content">
+        <section class="section">
+          <div class="section-body">
+            <!-- add content here -->
+             <div class="row">
+              <div class="col-12 ">
+                  <div class="header">
+                    <h4>Feedback and Ratings</h4>
+                    <h6>On All the Products Which has Feedbacks and/or Ratings </h6>
+                  </div>
+                <div class="card mt-3">
+                  <div class="card-body">
+                    <div class="table-responsive">
+                      {% if context %}
+                        
+                      <table class="table table-striped">
+                    
+                        <tr>
+                          <th>Sr No.</th>
+                          <th>Customer Name</th>
+                          <th>Feedback Date</th>
+                          <th>Feedback Title</th>
+                          <th>Rating</th>
+                          <th>Action</th>
+
+                        </tr>
+                        {% for f,r in context  %}
+                          
+                        <tr>
+                          <td>{{f.id}}</td>
+                          <td>{{f.userbase.first_name}} {{f.userbase.last_name}}</td>
+                          <td>{{f.fb_date.date}}</td>
+                          <td>
+                            {{f.fb_title}}
+                          </td>
+                          <td>
+                           {{r.value}}
+                          </td>
+                          <td >
+                            <a href="{% url 'viewfeed' f.id r.id %}"><button class="btn btn-light">
+                              <i class="icon-eye text-primary"></i>View </button></a>
+                          </td>
+                          
+                        </tr>
+                        {% endfor %}
+
+                    
+                    </table>
+                    <div class="pagination">
+                      <span class="current m-2">
+                           Page {{ context.number }} of {{ context.paginator.num_pages }}.
+                       </span>
+               
+                   <span class="step-links">
+                       {% if context.has_previous %}
+                           <a href="?page=1"><button class="btn btn-primary"> &laquo; First</button></a>
+                           <a href="?page={{ context.previous_page_number }}"><button class="btn btn-primary"> Previous</button></a>
+                       {% endif %}
+               
+                    
+                       {% if context.has_next %}
+                           <a href="?page={{ context.next_page_number }}"><button class="btn btn-primary">Next</button> </a>
+                           <a href="?page={{ context.paginator.num_pages }}"><button class="btn btn-primary">Last &raquo;</button></a>
+                       {% endif %}
+                   </span>
+               </div>
+               {% else %}
+               <h6 class="text-center"> <b> No Records....</b></h6>
+                    {% endif %}
+
+                  </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- end content here -->
+          </div>
+        </section>
+      </div>
+      <footer class="main-footer">
+        <div class="footer-right">
+        </div>
+      </footer>
+   {% endblock body %}
+</body>
+</html>

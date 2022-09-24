@@ -1,0 +1,200 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>Sales Report</title>
+		<link rel="stylesheet" href="{% static 'assets/css/app.min.css' %}">
+		<!-- Template CSS -->
+		<link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+		<style>
+			.invoice-box {
+				max-width: 800px;
+				margin: auto;
+				padding: 30px;
+				border: 1px solid #eee;
+				box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+				font-size: 16px;
+				line-height: 24px;
+				font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+				color: #555;
+			}
+
+			.invoice-box table {
+				width: 100%;
+				line-height: inherit;
+				text-align: left;
+			}
+
+			.invoice-box table td {
+				padding: 5px;
+				vertical-align: top;
+			}
+
+			.invoice-box table tr td:nth-child(2) {
+				text-align: right;
+			}
+
+			.invoice-box table tr.top table td {
+				padding-bottom: 20px;
+			}
+
+			.invoice-box table tr.top table td.title {
+				font-size: 45px;
+				line-height: 45px;
+				color: #333;
+			}
+
+			.invoice-box table tr.information table td {
+				padding-bottom: 40px;
+			}
+
+			.invoice-box table tr.heading td {
+				background: #eee;
+				border-bottom: 1px solid #ddd;
+				font-weight: bold;
+                text-align: justify;
+			}
+
+			.invoice-box table tr.details td {
+				padding-bottom: 20px;
+			}
+
+			.invoice-box table tr.item td {
+				border-bottom: 1px solid #eee;
+                text-align: justify;
+			}
+
+			.invoice-box table tr.item.last td {
+				border-bottom: none;
+			}
+
+			.invoice-box table tr.total td:nth-child(2) {
+				border-top: 2px solid #eee;
+				font-weight: bold;
+			}
+
+			@media only screen and (max-width: 600px) {
+				.invoice-box table tr.top table td {
+					width: 100%;
+					display: block;
+					text-align: left;
+				}
+
+				.invoice-box table tr.information table td {
+					width: 100%;
+					display: block;
+					text-align: left;
+				}
+			}
+
+			/** RTL **/
+			.invoice-box.rtl {
+				direction: rtl;
+				font-family: Tahoma, 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+			}
+
+			.invoice-box.rtl table {
+				text-align: right;
+			}
+
+			.invoice-box.rtl table tr td:nth-child(2) {
+				text-align: left;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="invoice-box">
+			<table cellpadding="0" cellspacing="0">
+				<tr class="top">
+					<td colspan="2">
+						<table>
+<tr>
+<td class="text-center">
+	<img alt="image" src="{% static 'customer/assets/img/logo.png' %} " height="30" class="header-logo" /> <p
+	class="logo-name" ><b>Paneri Designers</b></p>
+</td>
+</tr>
+<a class="btn btn-sm btn-primary ms-auto me-1 d-print-none float-right" href="" onclick="javascript:window.print();" style="margin-left:20px;">Print</a>
+						
+<tr>
+								
+
+								
+							</tr>
+						</table>
+					</td>
+				</tr>
+
+				<tr class="information">
+					<td colspan="2">
+						<table>
+							<tr>
+								<td>
+									
+									Report Id #: {{data.first.sales_id.id}}<br />
+									Created: {{d}}<br />
+								
+								</td>
+
+								<td>
+							<h5>Comapany Details</h5>
+
+									{{cp.comp_add}}
+									<br>
+									{{user.first_name}} {{user.last_name}}<br />
+                                    +91 {{user.Cus_phone}}<br />
+									{{request.user.email}}
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+            </table>
+
+                
+            <table cellpadding="0" cellspacing="0">
+                <h2 class="mb-1 text-2xl font-bold ">Total Number Of Sales: {{data.count}}</h2>
+
+                <h2 class="mb-1 text-2xl font-bold ">Sales Report</h2>
+				<tr class="heading">
+					<td>Sales no.</td>
+
+                    <td>Sales Date</td>
+                    <td>Sales Status</td>
+
+                    <td>Payment Status</td>
+
+                    <td>Customer name</td>
+                    <td>Ship To</td>
+					
+                    <td>Qty</td>
+
+                    <td>Price</td>
+				</tr>
+				{% for d in  data  %}
+				<tr class="item">
+            
+					<td>{{d.id}}</td>
+
+                    <td>{{d.sales_id.sales_date}}</td>
+                    <td>{{d.sales_id.sales_status}}</td>
+
+					<td> {{d.sales_id.payment_status}} </td>
+
+                    <td>{{d.sales_id.userbase.first_name}} {{d.sales_id.userbase.last_name}}</td>
+                    <td>{{d.sales_id.userbase.area_id.area_name}} </td>
+
+
+                    <td>{{d.qty}}</td>
+
+					<td>&#8377 {{d.final_price}}</td>
+				</tr>
+				{% endfor %}
+
+				
+			</table>
+		</div>
+	</body>
+</html>

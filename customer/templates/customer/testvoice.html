@@ -1,0 +1,203 @@
+{% load static %}
+
+<head>
+  {% block title %}
+  {% endblock title %}
+  <!--tags -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="keywords" content="Paneri Designers" />
+  <!--/ tags -->
+  <link href="{% static 'customer/assets/css/bootstrap.css' %} " rel="stylesheet" type="text/css" media="all" />
+  <link href="{% static 'customer/assets/css/style2.css' %} " rel="stylesheet" type="text/css" media="all" />
+  <link href="{% static 'customer/assets/css/font-awesome.css' %} " rel="stylesheet">
+  <link href="{% static 'customer/assets/css/easy-responsive-tabs.css' %} " rel='stylesheet' type='text/css' />
+  <link href="{% static 'customer/assets/css/flexslider.css' %} " rel='stylesheet' media="screen" type="text/css" />
+  <script type="text/javascript" src="{% static 'customer/assets/js/admin/jquery-2.1.4.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'customer/assets/js/page/sweetalert.js' %} "></script>
+  <script type="text/javascript" src="{% static 'customer/assets/js/page/sweetalert.min.js' %} "></script>
+  <!-- for bootstrap working -->
+  <!--<link href="//fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800" rel="stylesheet">
+	<link
+		href='//fonts.googleapis.com/css?family=Lato:400,100,100italic,300,300italic,400italic,700,900,900italic,700italic'
+		rel='stylesheet' type='text/css'>-->
+  <script src="https://cdn.rawgit.com/mattdiamond/Recorderjs/08e7abd9/dist/recorder.js"></script>
+</head>
+
+<style>
+  #record {
+    background-color: red;
+    /* Green */
+    border-width: medium;
+    border-color: black;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    max-width: 50%;
+    max-height: 15%;
+    border-radius: 50%;
+    left: 100px;
+    right: 100px;
+    position: relative;
+  }
+
+  #stopRecord {
+    background-color: green;
+    /* Green */
+    border-width: medium;
+    border-color: black;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    max-width: 50%;
+    max-height: 15%;
+    border-radius: 50%;
+    left: 100px;
+    right: 100px;
+    position: relative;
+  }
+
+  h2 {
+    left: 100px;
+    position: relative;
+  }
+
+  #recordedAudio {
+    left: 100px;
+    right: 100px;
+    position: relative;
+  }
+</style>
+
+<h2>Record</h2>
+{% csrf_token %}
+<p>
+  <button id="record">start</button>
+  <button id="stopRecord" disabled>Stop</button>
+</p>
+<p>
+  <audio id='recordedAudio'></audio>
+
+</p>
+<script>
+
+  // navigator.mediaDevices.getUserMedia({ audio: true, video: false })
+  //   .then(stream => { handlerFunction(stream) })
+
+
+  // function handlerFunction(stream) {
+  //   rec = new MediaRecorder(stream);
+  //   rec.ondataavailable = e => {
+  //     audioChunks.push(e.data);
+  //     if (rec.state == "inactive") {
+  //       let blob = new Blob(audioChunks, { type: 'audio/wav' });
+  //       console.info(blob)
+  //       let objUrl = URL.createObjectURL(blob);
+  //       recordedAudio.src = objUrl
+
+  //       const url = objUrl
+  //       const a = document.createElement('a');
+  //       a.style.display = 'none';
+  //       a.href = url;
+  //       // the filename you want
+  //       a.download = 'lala.wav';
+  //       document.body.appendChild(a);
+  //       a.click();
+
+  //       recordedAudio.controls = true;
+  //       recordedAudio.autoplay = true;
+  //       sendData(blob)
+  //     }
+  //   }
+  // }
+  function sendData(data) {
+    var fd = new FormData();
+    var x = $('input[name=csrfmiddlewaretoken]').val();
+    fd.append('data', data);
+    fd.append('csrfmiddlewaretoken', x);
+
+    $.ajax({
+      type: 'POST',
+      url: '{% url 'testaudio' %}',
+      data: fd,
+
+      processData: false,
+      contentType: false
+    }).done(function (data) {
+      // console.log(data);
+
+    });
+  }
+
+  var record = document.getElementById('record')
+  var stopRecord = document.getElementById('stopRecord')
+
+  var AudioContext = window.AudioContext || window.webkitAudioContext;
+  var audioContext = new AudioContext();
+
+  var constraints = {
+    audio: true,
+    video: false
+  }
+  var gumStream;
+  var input;
+  var rec;
+  navigator.mediaDevices.getUserMedia(constraints).then(function (stream) {
+    gumStream = stream;
+    input = audioContext.createMediaStreamSource(stream);
+    rec = new Recorder(input, {
+      numChannels: 1
+    })
+ 
+  });
+
+
+  record.onclick = e => {
+    // console.log('I was clicked')
+    record.disabled = true;
+    record.style.backgroundColor = "blue"
+    stopRecord.disabled = false;
+    audioChunks = [];
+    // rec.start();
+    rec.record()
+
+  }
+
+  function createDownloadLink(blob) {
+
+    // let newBlob = new Blob([blob], { type: 'audio/wav' });
+
+    console.info(blob)
+
+    var url = URL.createObjectURL(blob);
+
+    recordedAudio.src = url
+
+    recordedAudio.controls = true;
+    recordedAudio.autoplay = true;
+    sendData(blob)
+  }
+
+  stopRecord.onclick = e => {
+    console.log("I was clicked")
+    record.disabled = false;
+    stop.disabled = true;
+    record.style.backgroundColor = "red"
+    // rec.stop();
+    rec.stop();
+    // gumStream.getAudioTracks()[0].stop();
+    rec.exportWAV(createDownloadLink);
+
+  }
+
+</script>

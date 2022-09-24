@@ -1,0 +1,103 @@
+{% extends "Mainadmin/index.html" %}
+{% load static %}
+<!-- Main Content -->
+      {% block body %}
+      
+      <!-- Main Content -->
+      <div class="main-content">
+        <section class="section">
+          <div class="section-body">
+            <!-- add content here -->
+            
+            <form action="{% url 'addimage' %}" id="sup" method="POST" enctype="multipart/form-data">
+              {% csrf_token %}
+            <div class="mb-3">
+              <input type="file" name="add" accept="image/*" required>
+              <button class="btn btn-primary mr-1" type="submit"  >Add</button>
+              </div>
+            </form>
+            <div class="row">
+              {% if images %}
+                {% for img in images %}
+              <div class="col-12 col-md-6 col-lg-3" >
+                <div class="card card-primary" style="height: 90%;">
+                  <div class="card-header">
+                    <h4>Product Id -{{img.id}}</h4>
+                  </div>
+                  <div class="card-body text-center">
+                    <img src="/media/{{img.gallary_img}}"  class="card-img img-thumbnail rounded mb-2" style="height: 80%; max-height: 90%;" alt="ProductImage">
+                 
+                   <form action="{% url 'delimg' img.id %}" id="sup" name="dlimg" method="POST" >{% csrf_token %}
+                    <button class="btn btn-danger del" form="dlimg" value="{{img.id}}">Delete</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+              {% endfor %}
+              
+              {% else %}
+              <h4 class="text-center fw-bold">No Images To Show</h4>
+              {% endif %}
+
+              
+            </div>
+          
+            <!-- end content here -->
+          </div>
+          <div class="pagination">
+            <span class="step-links">
+                {% if images.has_previous %}
+                    <a href="?page=1">&laquo; <button class="btn btn-primary"> First</button></a>
+                    <a href="?page={{ images.previous_page_number }}"><button class="btn btn-primary"> Previous</button></a>
+                {% endif %}
+        
+                <span class="current">
+                    Page {{ images.number }} of {{ images.paginator.num_pages }}.
+                </span>
+        
+                {% if images.has_next %}
+                    <a href="?page={{ images.next_page_number }}"><button class="btn btn-primary">next</button> </a>
+                    <a href="?page={{ images.paginator.num_pages }}"><button class="btn btn-primary">Previous &raquo;</button></a>
+                {% endif %}
+            </span>
+        </div>
+        </section>
+      </div>
+    </form>
+      <footer class="main-footer">
+        <div class="footer-right">
+        </div>
+      </footer>
+    </div>
+  </div>
+    
+  {% endblock body %}
+  {% block js %}
+<script>
+    $(".del").click(function () {
+      swal({
+      title: 'Are you sure?',
+      text: 'Once deleted, you will not be able to recover this record!',
+      icon: 'warning',
+      buttons: true,
+      dangerMode: true,
+    })
+      .then((willDelete) => {
+        if (willDelete) {
+          
+          swal('Poof! Record has been deleted!', {
+            icon: 'success',
+          });
+          var url="{% url 'delimg' 123 %}";
+          var id=$(this).attr("value");
+          console.log(id);
+          window.location.href=url.replace('123', id);
+        } else {
+          swal('Your Record is safe!');
+        }
+      });
+    });
+  </script>  
+{% endblock js %}
+</body>
+</html>

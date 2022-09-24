@@ -1,0 +1,249 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Profile</title>
+    <!--/tags -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="keywords" content="Paneri Designers" />
+	<script type="text/javascript" src="{% static 'customer/assets/js/admin/jquery-2.1.4.min.js' %}"></script>
+
+    <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false);
+		function hideURLbar(){ window.scrollTo(0,1); } </script>
+    <!-- //tags -->
+    <link href="{% static 'customer/assets/css/bootstrap.min.css' %} " rel="stylesheet" type="text/css" media="all" />
+    <link href="{% static 'customer/assets/css/font-awesome.css' %} " rel="stylesheet">
+    <!-- //for bootstrap working -->
+    <style>
+        body {
+            background: #2fdab8
+        }
+
+        .form-control:focus {
+            box-shadow: none;
+            border-color: #2fdab8
+        }
+
+        .profile-button {
+            background: #2fdab8;
+            box-shadow: none;
+            border: none
+        }
+
+        .profile-button:hover {
+            background: #682773
+        }
+
+        .profile-button:focus {
+            background: #682773;
+            box-shadow: none
+        }
+
+        .profile-button:active {
+            background: #682773;
+            box-shadow: none
+        }
+
+        .back:hover {
+            color: #2fdab8;
+            cursor: pointer
+        }
+
+        .labels {
+            font-size: 11px
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Main Page Content-->
+    <div class="container rounded bg-white mt-5 mb-5">
+        <div class="row">
+            <div class="col-md-3 border-right">
+                <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img class=" mt-5" width="150px"
+                        src="/media/{{user.profile}}"><span class="font-weight-bold">{{user.user_id.username}}</span><span
+                        class="text-black-50">{{user.user_id.email}}</span><span> </span></div>
+            </div>
+            <div class="col-md-8 border-right">
+              <form method="post" action="{% url 'edit_profile' user.user_id.id %}" enctype="multipart/form-data">
+            {% csrf_token %}
+                
+                <div class="p-3 py-5">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h4 class="text-right">Profile Settings</h4>
+                    </div>
+                    <div class="row mt-2">
+                        
+                        <div class="col-md-6"><label class="labels">First Name</label><input type="text"
+                                class="form-control" name="fname" placeholder="First name" value="{{user.first_name}}" required=""></div>
+                        <div class="col-md-6"><label class="labels">Last Name</label><input type="text"
+                                class="form-control" value="{{user.last_name}}" name="lname" placeholder="Last name" required=""></div>
+                    </div>
+                    
+                        <div class="col-md-12"><label class="labels">Mobile Number</label><input type="tel"
+                                pattern="[0-9]{10}" class="form-control" placeholder="Enter phone number" name="phone" value="{{user.Cus_phone}}" required="">
+                        </div>
+                        <div class="col-md-12"><label class="labels">Email ID</label><input type="email"
+                                class="form-control" placeholder="Enter email id" name="email" value="{{user.user_id.email}}" required=""></div>
+                        <div class="col-md-12"><label class="labels">Address Line 1</label><input type="text"
+                                class="form-control" placeholder="Enter address line 1" name="address" value="{{user.cus_add1}}" required=""></div>
+                    
+                        <div class="col-md-12"><label class="labels">Profile Image</label><input type="file"
+                                class="form-control" placeholder="Enter Area" value="" name="propic"></div>
+
+                    </div>
+                    <div class="mt-5 text-center"><button class="btn btn-primary profile-button" type="submit">Save
+                            Profile</button><a href="{% url 'home' %}" class="btn btn-primary cart-btn-transform m-3"
+                            style="margin-top: 5%;background-color: #4466f2 !important;border-color: #4466f2 !important"
+                            data-abc="true">Continue shopping</a></div>
+
+                </div>
+              </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+		//the ajax function for country
+		console.log("hello")
+	  $("#country-data").change(function () {
+		const country_id=$(this).val();
+		console.log(country_id);
+		$.ajax({
+		  type:"POST",
+		  url: "{% url 'country_ajax-data' %}",
+		  data:{
+			'country_id':country_id,
+			'csrfmiddlewaretoken':$('input[name=csrfmiddlewaretoken]').val(),
+		  },
+		  success:function(data){
+			console.log("Success");
+			let html_data='<option value="" selected disabled>Choose State </option>';
+			data.forEach(function (data) {  
+			  html_data = html_data + `<option value="${data.id}">${data.state_name}</option>`;
+	  
+			});
+			$("#state-data").append(html_data);
+			console.log(html_data)
+		  },
+		  error:function(error){
+			console.log("Error");
+		  }
+		});
+		});
+		//the ajax function for states and city
+		$("#state-data").change(function () {
+		const state_id=$(this).val();
+		console.log(state_id);
+		$.ajax({
+		  type:"POST",
+		  url: "{% url 'state_ajax-data' %}",
+		  data:{
+			'state_id':state_id,
+			'csrfmiddlewaretoken':$('input[name=csrfmiddlewaretoken]').val(),
+		  },
+		  success:function(data){
+			console.log("Success");
+			let html_data='<option value="" selected disabled>Choose City </option>';
+			data.forEach(function (data) {  
+			  html_data =html_data+ `<option value="${data.id}">${data.city_name}</option>`;
+			});
+			$("#city-data").html(html_data);
+		  },
+		  error:function(error){
+			console.log("Error");
+		  }
+		});
+		});
+		//city and area ajax function
+		$("#city-data").change(function () {
+		const city_id=$(this).val();
+		console.log(city_id);
+		$.ajax({
+		  type:"POST",
+		  url: "{% url 'city_ajax-data' %}",
+		  data:{
+			'city_id':city_id,
+			'csrfmiddlewaretoken':$('input[name=csrfmiddlewaretoken]').val(),
+		  },
+		  success:function(data){
+			console.log("Success");
+			let html_data=`<option value="" selected disabled>Choose Area </option>`;
+		  
+			data.forEach(function (data) {  
+			  html_data =html_data + `<option value="${data.id}" name="area_id">${data.area_name}</option>`;
+			  
+			});
+		console.log(html_data)
+			$("#area-data").html(html_data);
+	  
+		  },
+		  error:function(error){
+			console.log("Error");
+		  }
+		});
+		});
+		$("#area-data").change(function () {
+		const area_id=$(this).val();
+		console.log(area_id);
+		$.ajax({
+		  type:"POST",
+		  url: "{% url 'area_ajax-data' %}",
+		  data:{
+			'area_id':area_id,
+			'csrfmiddlewaretoken':$('input[name=csrfmiddlewaretoken]').val(),
+		  },
+		  success:function(data){
+			console.log("Success");
+			let html_data=``;
+		  
+			data.forEach(function (data) {  
+			  html_data =html_data + `<option value="${data.id}" name="area_id">${data.area_name}</option>`;
+			  
+			});
+		console.log(html_data)
+			$("#area-data").html(html_data);
+	  
+		  },
+		  error:function(error){
+			console.log("Error");
+		  }
+		});
+		});
+        $( document ).ready(function(){
+            $.ajax({
+              type:"GET",
+              url: "{% url 'c_ajax_data' %}",
+              data:{
+                
+              },
+              success:function(data){
+                console.log("Success");
+                let html_data=`<option selected>Choose Country</option>`;
+              
+                data.forEach(function (data) {  
+                  html_data =html_data + `<option value="${data.id}" name="area_id">${data.country_name}</option>`;
+                  
+                });
+            console.log(html_data)
+                $("#country-data").html(html_data);
+          
+              },
+              error:function(error){
+                console.log("Error");
+              }
+            });
+        });
+
+        //{'profile':true,'layouts':true,'photo gallery':true,'my package':true} ->4
+
+        // {'profile':true,'layouts':true,'photo gallery':true,'my package':true,'feedback':true,'services':true} ->6
+
+        // {'profile':true,'layouts':true,'photo gallery':true,'my package':true,'feedback':true,'services':true,'products':true,'appointments':true,'contact messages':true} ->9
+        // {'profile':true,'layouts':true,'photo gallery':true,'my package':true,'feedback':true,'services':true,'products':true,'appointments':true,'contact messages':true,'video gallery':true,'complaints':true,'payments':true} ->12
+    </script>
+</body>
+
+</html>

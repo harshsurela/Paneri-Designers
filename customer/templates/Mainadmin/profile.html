@@ -1,0 +1,181 @@
+{% extends "Mainadmin/index.html" %}
+{% load static %}
+{% block body %}
+      <!-- Main Content -->
+      <div class="main-content">
+        <section class="section">
+          <div class="section-body">
+            <!-- add content here -->
+            <div class="row mt-sm-4">
+              <div class="col-12 col-md-12 col-lg-12">
+                <div class="card author-box">
+                  
+                  <div class="card-body">
+                    <div class="author-box-center">
+                      <img alt="image will be here" src="/media/{{user.profile}}" class="rounded-circle author-box-picture">
+                      <div class="clearfix"></div>
+                      <div class="author-box-name mt-2">
+                        <a href="{% url 'adminprofile' %}">{{user.first_name}} {{user.last_name}}</a>
+                      </div>
+                    </div>
+                  <div class="card-header">
+                    <h4>Personal Details</h4>
+                  </div>
+                  <div class="card-body">
+                    <div class="py-4">
+                      <p class="clearfix">
+                        <span class="float-left">
+                          Username
+                        </span>
+                        <span class="float-right text-muted">
+                          {{user.user_id.username}}
+                        </span>
+                      </p>
+                      <p class="clearfix">
+                        <span class="float-left">
+                          Gender
+                        </span>
+                        {% if user.gender == "True" %}
+                          
+                        <span class="float-right text-muted">
+                          Male
+                        </span>
+                        {% else %}
+                        <span class="float-right text-muted">
+                          Female
+                        </span>
+                        {% endif %}
+                      </p>
+                      <p class="clearfix">
+                        <span class="float-left">
+                          Birthday
+                        </span>
+                        <span class="float-right text-muted">
+                         {{user.dob}}
+                        </span>
+                      </p>
+                      <p class="clearfix">
+                        <span class="float-left">
+                          Phone
+                        </span>
+                        <span class="float-right text-muted">
+                          {{user.Cus_phone}}
+                        </span>
+                      </p>
+                      <p class="clearfix">
+                        <span class="float-left">
+                          Mail
+                        </span>
+                        <span class="float-right text-muted">
+                          {{user.user_id.email}}
+                        </span>
+                      </p>
+                      <p class="clearfix">
+                        <span class="float-left">
+                          Location
+                        </span>
+                        <span class="float-right text-muted">
+                          {{user.cus_add1}}
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                  
+
+                </div>
+
+                
+
+              </div>
+              
+              <div class="col-12 col-md-12 col-lg-12">
+                <div class="card">
+                  <div class="padding-20">
+                    <ul class="nav nav-tabs" id="myTab2" role="tablist">
+                      <li class="nav-item">
+                        <a class="nav-link active" id="profile-tab2" data-toggle="tab" href="#settings" role="tab"
+                          aria-selected="false">Update Profile</a>
+                      </li>
+                    </ul>
+                    <div class="tab-content tab-bordered" id="myTab3Content">
+                      <div class="tab-pane fade show active" id="settings" role="tabpanel" aria-labelledby="profile-tab2">
+                        <form method="POST" id="sup" class="needs-validation" action="{% url 'updateprofile' %}" enctype="multipart/form-data">
+                          {% csrf_token %}
+                          <div class="card-header">
+                            <h4>Edit Profile</h4>
+                          </div>
+                          <div class="card-body">
+                            <div class="row">
+                              <div class="form-group col-md-6 col-12">
+                                <label>First Name</label>
+                                <input type="text" class="form-control" value="{{user.first_name}}" name="fname"  onKeyPress="return ValidateAlpha(event);" title="Enter only characters" required>
+                                <div class="invalid-feedback">
+                                  Please fill in the first name
+                                </div>
+                              </div>
+                              <div class="form-group col-md-6 col-12">
+                                <label>Last Name</label>
+                                <input type="text" class="form-control" value="{{user.last_name}}" name="lname"  onKeyPress="return ValidateAlpha(event);" title="Enter only characters" required>
+                                <div class="invalid-feedback">
+                                  Please fill in the last name
+                                </div>
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="form-group col-md-7 col-12">
+                                <label>Email</label>
+                                <input type="email" class="form-control" value="{{user.user_id.email}}" name="email" data-parsley-required-message="Please enter your email address" data-parsley-type="email" data-parsley-type-message="Please enter valid email" data-parsley-trigger="keyup" required>
+                                <div class="invalid-feedback">
+                                  Please fill in the email
+                                </div>
+                              </div>
+                              <div class="form-group col-md-5 col-12">
+                                <label>Phone</label>
+                                <input type="tel" class="form-control" value="{{user.Cus_phone}}" pattern="[0-9]{10}" name="phone" required>
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="form-group col-12">
+                                <label>Address</label>
+                                <textarea name="add" id="myTextarea"
+                                  class="form-control summernote-simple" ></textarea>
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="form-group col-12">
+                                <label>Profile Photo</label>
+                                <input type="file" name="profileimg" class="form-control" accept="image/*"  >
+                              </div>
+                            </div>
+                          </div>
+                          <div class="card-footer text-right">
+                            <button class="btn btn-primary " id="swal-1" type="submit">Save Changes</button>
+                          </div>
+                        </form>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+     <!-- content end here -->
+          </div>
+        </section>
+      </div>
+      <footer class="main-footer">
+        <div class="footer-right">
+        </div>
+      </footer>
+      {% endblock body %}
+      {% block js %}
+        <script>
+          $(document).ready(function(){
+            document.getElementById("myTextarea").value = `{{user.cus_add1}}`; 
+          });
+        </script>
+      {% endblock js %}
+</body>
+</html>

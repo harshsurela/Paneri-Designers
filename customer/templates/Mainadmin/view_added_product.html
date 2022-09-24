@@ -1,0 +1,154 @@
+{% extends "Mainadmin/index.html" %}
+{% load static %}
+{% block body %}
+<!-- Main Content -->
+<div class="main-content">
+  <section class="section">
+    <div class="section-body">
+      <!-- add content here -->
+      <form id="sup" action="{% url 'updateproduct' product.id %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+       <div class="card">
+            <div class="card-header">
+              <h4>Add Product Details</h4>
+            </div>
+            <input type="hidden" value="{{company.id}}" name="company">
+            <div class="card-body">
+              <div class="form-group">
+                <label>Product Name</label>
+                <input type="text" name="pname" value="{{product.product_name}}" class="form-control" onKeyPress="return ValidateAlpha(event);" title="Enter only characters" >
+              </div>
+              <div class="form-group">
+                <label>Product Description</label>
+                <textarea class="form-control" name="desc" placeholder="{{product.desc | safe}}" ></textarea>
+              </div>
+              <div class="form-group">
+                <label>Product Price</label>
+                <input type="text" onkeypress="return isNumberKey(event)" class="form-control" name="price" value="{{product.price}}" required>
+              </div>
+              <div class="form-group">
+                <label>Apply Discount on Product</label>
+                <input type="text" onkeypress="return isNumberKey(event)"  class="form-control" name="discount" value="{{product.discount}}">
+              </div>
+              <div class="form-group">
+                <label>Quantity on Hand to Sell</label>
+                <input type="text" onkeypress="return isNumberKey(event)" class="form-control" name="qty" value="{{product.qty_on_hand}}" required>
+              </div>
+              <div class="form-group">
+                <label>Category of the Product</label>
+                <select name="cat" id="cat" class="form-control" required>
+                  <option selected disabled>Choose Category</option>
+                  
+                  {% for c in cat %}
+                  <option value="{{c.id}}" >{{c.cat_name}}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Sub Category of the Product</label>
+                <select name="subcat" id="subcat" class="form-control" required>
+                  <option selected disabled>Choose Sub Category</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Product Size</label>
+                <select name="size" id="" class="form-control" required>
+                  <option selected>{{product.size_id.deatils}}</option>
+
+                  {% for ps in psize %}
+                  <option value="{{ps.id}}">{{ps.details}}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Product Color</label>
+                <select name="color" id="" class="form-control" required>
+                  <option selected >{{product.color_id.color_name}}</option>
+
+                  {% for pc in pcolor %}
+                  <option value="{{pc.id}}">{{pc.color_name}}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Product Image</label>
+                <div style="width: 200px; max-width: 300px;">
+                <img src="/media/{{product.product_img}}" width="80%" alt="Product Image">
+                </div>
+                <input type="file" class="form-control" name="pimg" accept="image/*" required>
+              </div>
+            <div class="card-footer text-right">
+              <button class="btn btn-primary mr-1" type="submit">Update Product</button>
+            </form>
+              <form action="{% url 'products' %}" id="sup" class="d-inline">
+             <button class="btn btn-primary " type="submit">Cancel</button>
+            </form>
+            </div>
+          </div>
+        </div>
+      
+      
+
+{% endblock body %}
+            <!-- content end here -->
+        
+      <footer class="main-footer">
+        <div class="footer-right">
+        </div>
+      </footer>
+    </div>
+  </div>
+  {% block js %}
+  <script>
+    //for category and sub category
+    $("#cat").change(function () {
+        const cat_id=$(this).val();
+        console.log(cat_id);
+        $.ajax({
+          type:"POST",
+          url: "{% url 'cat_ajax-data' %}",
+          data:{
+            'cat_id':cat_id,
+            'csrfmiddlewaretoken':$('input[name=csrfmiddlewaretoken]').val(),
+          },
+          success:function(data){
+            console.log("Success");
+            let html_data='<option value="" selected disabled>Choose Sub Category </option>';
+            data.forEach(function (data) {  
+              html_data =html_data+ `<option value="${data.id}" name="${data.id}">${data.cat_name}</option>`;
+    
+            });
+            $("#subcat").html(html_data);
+          },
+          error:function(error){
+            console.log("Error");
+          }
+        });
+        });
+      $("#swal-15").click(function () {
+        swal({
+        title: 'Are you sure?',
+        text: 'Once deleted, you will not be able to recover this record!',
+        icon: 'warning',
+        buttons: true,
+        dangerMode: true,
+      })
+        .then((willDelete) => {
+          if (willDelete) {
+            
+            swal('Poof! Record has been deleted!', {
+              icon: 'success',
+            });
+            var url="{% url 'delrecord' 123 %}";
+            var id=$(this).attr("value");
+            console.log(id);
+            window.location.href=url.replace('123', id);
+          } else {
+            swal('Your Record is safe!');
+          }
+        });
+      });
+    </script>  
+  {% endblock js %}
+</body>
+</html>

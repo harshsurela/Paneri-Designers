@@ -1,0 +1,123 @@
+{% extends "Mainadmin/index.html" %}
+{% load static %}
+{% block body %}
+
+<div class="main-content">
+    <section class="section">
+      <div class="section-body">
+        <!-- add content here -->
+
+
+        <div class="row">
+          <div class="col-12 col-sm-12 col-lg-12">
+            <div class="card profile-widget">
+              <div class="profile-widget-header">
+                <img alt="image" src="/media/{{request.user.userbase.profile}}" class="rounded-circle profile-widget-picture">
+              </div>
+              <div class="profile-widget-description pb-0">
+                <div class="profile-widget-name">{{request.user.username}} <div class="text-muted d-inline font-weight-normal">
+                    <div class="slash"></div> Admin
+                  </div>
+                </div>
+                <center>
+                  <p>
+                  <h3>Welcome to Paneri Designers {{request.user.userbase.first_name}} {{request.user.userbase.last_name}}!</h3><br>
+                  <h5>Here we have some shortcuts for you!</h5>
+                  <h5>You can navigate your self through them!</h5>
+                  </p>
+                </center>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row " style="margin-top: 50px;">
+          <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
+            <div class="card">
+              <div class="card-statistic-4">
+                <div class="align-items-center justify-content-between">
+                  <div class="row ">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
+                      <div class="card-content">
+                        <h5 class="font-15">Total Sales</h5>
+                        <h2 class="mb-3 font-18">{{context.sales}}</h2>
+                      </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
+                      <div class="banner-img">
+                        <img src="assets/img/banner/1.png" alt="">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
+            <div class="card">
+              <div class="card-statistic-4">
+                <div class="align-items-center justify-content-between">
+                  <div class="row ">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
+                      <div class="card-content">
+                        <h5 class="font-15"> Customers</h5>
+                        <h2 class="mb-3 font-18">{{context.users}}</h2>
+                      </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
+                      <div class="banner-img">
+                        <img src="assets/img/banner/2.png" alt="">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
+            <div class="card">
+              <div class="card-statistic-4">
+                <div class="align-items-center justify-content-between">
+                  <div class="row ">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
+                      <div class="card-content">
+                        <h5 class="font-15">Purchases</h5>
+                        <h2 class="mb-3 font-18">{{context.purchase}}</h2>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
+                      <div class="banner-img">
+                        <img src="assets/img/banner/3.png" alt="">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
+            <div class="card">
+              <div class="card-statistic-4">
+                <div class="align-items-center justify-content-between">
+                  <div class="row ">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
+                      <div class="card-content">
+                        <h5 class="font-14">Apppointments</h5>
+                        <h2 class="mb-3 font-18">{{context.app}}</h2>
+                      </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
+                      <div class="banner-img">
+                        <img src="assets/img/banner/4.png" alt="">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- add content here -->
+      </div>
+    </section>
+  </div>
+{% endblock body %}

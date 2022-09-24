@@ -1,0 +1,128 @@
+{% extends "Mainadmin/index.html" %}
+{% load static %}
+{% block body %}
+      <!-- Main Content -->
+      <div class="main-content">
+        <section class="section">
+          <div class="section-body">
+            <!-- add content here -->
+            <tabel>
+              <tr>
+                <th>
+                  <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <div class="card">
+                      <div class="card-statistic-4">
+                        <form id="sup" action="filtercomp" method="post">
+                          {% csrf_token %}
+                        <div class="align-items-center justify-content-between">
+                          <div class="row ">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
+                              <div class="card-content">
+                                <h5 class="font-15 ml-3">Select Date:</h5>
+                                <h2 class="mb-3 font-18 ml-3"><input type="date" id="compdate" name="compdate" required></h2>
+                              </div>
+                            </div>                      
+                          </div>
+                          <th>
+                            <button class="btn btn-primary ml-3 mb-3" type="submit">Get Complaints</button>
+                          </th>
+                          </div>
+                        </form>
+
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </th>
+              </tr>
+            </tabel>
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          {% if complaint %}
+            
+          <table class="table table-striped">
+            <tr>
+              
+              <th>Complaint Number</th>
+              <th>Customer Name</th>
+              <th>Complaint Details</th>
+              <th>Complaint Date</th>
+              <th>Resolve</th>
+              
+            </tr>
+            {% for c in complaint %}
+              
+            <tr>
+              <td>{{c.id}}</td>
+              <td class="text-truncate">
+                {{c.userbase.first_name}}
+                {{c.userbase.last_name}}
+              </td>
+              <td>{{c.title}}</td>
+              <td>{{c.com_date}}</td>
+              {% if c.com_resolve == False %} 
+              <td><a href="{% url 'rescomp' c.id %}" class="btn btn-outline-primary">Resolve</a>
+              </td>
+                {% else %}
+                <td><label class="btn icon-right btn-primary">Resolved <i class="fas fa-check"></i></label></td>
+              {% endif %}
+            </tr>
+            {% endfor %}
+
+              
+          </table>
+          <div class="pagination">
+            <span class="step-links">
+                {% if complaint.has_previous %}
+                    <a href="?page=1">&laquo; <button class="btn btn-primary"> First</button></a>
+                    <a href="?page={{ complaint.previous_page_number }}"><button class="btn btn-primary"> Previous</button></a>
+                {% endif %}
+        
+                <span class="current">
+                    Page {{ complaint.number }} of {{ complaint.paginator.num_pages }}.
+                </span>
+        
+                {% if complaint.has_next %}
+                    <a href="?page={{ complaint.next_page_number }}"><button class="btn btn-primary">next</button> </a>
+                    <a href="?page={{ complaint.paginator.num_pages }}"><button class="btn btn-primary">Previous &raquo;</button></a>
+                {% endif %}
+            </span>
+        </div>
+          {% else %}
+          <hr>
+          <h4 class="text-center">No Complaints Found</h4>
+          {% endif %}
+         <!-- -->
+        </div>
+      </div>
+
+            <!-- end content here -->
+          </div>
+        </section>
+      </div>
+      <footer class="main-footer">
+        <div class="footer-right">
+        </div>
+      </footer>
+      {% endblock body %}
+      {% block js %}
+      <script>
+        var today = new Date();
+		var dd = today.getDate();
+		var mm = today.getMonth() + 1; //January is 0!
+		var yyyy = today.getFullYear();
+
+		 if (dd < 10) {
+		dd = '0' + dd;
+		}
+
+		if (mm < 10) {
+		mm = '0' + mm;
+		} 
+			 
+		today = yyyy + '-' + mm + '-' + dd;
+		document.getElementById("compdate").setAttribute("max", today);
+      </script>
+      {% endblock js %}
+</body>
+</html>

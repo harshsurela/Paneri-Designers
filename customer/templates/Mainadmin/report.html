@@ -1,0 +1,85 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+<title>Sales Report</title>
+
+<!-- CSS -->
+<style>
+hr{
+        background-color:#404040;
+    }
+body{
+    font-size:14px;
+}
+.myTable { 
+  width: 100%;
+  text-align: center;
+  background-color: #ffb3b3;
+  border-collapse: collapse;
+
+  }
+.myTable th { 
+  background-color: #800000;
+  color: white; 
+  }
+.myTable td, 
+.myTable th { 
+  padding: 5px;
+  border: 1px solid white;
+  max-width:190px;
+
+  }
+#address{
+    margin-right:530px;
+}
+</style>
+
+</head>
+<body>
+    
+    <header>
+        <div align="center" style="padding-top:20px">
+                
+                <div style="padding-top:12px;color:rgb(6, 56, 58);">
+                <h1 style="font-size:24px; ">Paneri Designers</>
+                </div>
+        </div>
+        <div align="right">
+            <p>Date: <b> {{date}} </b></p>
+        </div>  
+        <hr/>   
+    </header>
+    
+
+<h2 align="center" style = "font-size:24px"> Sales Report </h2>
+{% if sales %}
+  
+<table class="myTable" align="center">
+  <tr>
+    <th style="width:7%">No</th>
+        <th >Order Date</th>
+        <th >Total Products</th>
+        <th >Area</th>
+        <th >Order Status</th>
+        <th >Total Amount (Rs. )</th>
+        <th >Customer Id</th>
+  </tr>
+    {% for sale in sales %}
+
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td><b>{{sale.sales_id.sales_date.date}}</b></td>
+            <td>{{sale.qty}}</td>
+            <td>{{sale.sales_id.userbase.area_id.area_name}}</td>
+            <td>{{sale.sales_id.sales_status}}</td>
+            <td>{{sale.final_price}}</td>
+            <td>{{sale.sales_id.userbase.user_id.id}}</td>
+        </tr>
+        
+    {% endfor %}   
+</table>
+{% endif %}
+
+</body>
+</html>

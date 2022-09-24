@@ -1,0 +1,381 @@
+{% extends 'customer/base.html' %}
+{% load static %}
+{% load my_filters %}
+{% load mathfilters %}
+{% block title %}
+<title>View Order</title>
+{% endblock title %}
+{% block body %}
+<style>
+    .container-fluidb {
+        margin-top: 50px;
+        margin-left: 10%;
+        margin-right: 10%;
+    }
+
+    .card-body {
+        -ms-flex: 1 1 auto;
+        flex: 1 1 auto;
+        padding: 1.40rem
+    }
+
+    .img-sm {
+        width: 80px;
+        height: 80px
+    }
+
+    .itemside .info {
+        padding-left: 15px;
+        padding-right: 7px
+    }
+
+    .table-shopping-cart .price-wrap {
+        line-height: 1.2
+    }
+
+    .table-shopping-cart .price {
+        font-weight: bold;
+        margin-right: 5px;
+        display: block
+    }
+
+    .text-muted {
+        color: #969696 !important
+    }
+
+    a {
+        text-decoration: none !important
+    }
+
+    .card {
+        position: relative;
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        min-width: 0;
+        word-wrap: break-word;
+        background-color: #fff;
+        background-clip: border-box;
+        border-style: double;
+        border-radius: 0px
+    }
+
+    .itemside {
+        position: relative;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        width: 100%
+    }
+
+    .dlist-align {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex
+    }
+
+    [class*="dlist-"] {
+        margin-bottom: 5px
+    }
+
+
+    .price {
+        font-weight: 600;
+        color: #212529
+    }
+
+    .btn.btn-out {
+        outline: 1px solid #fff;
+        outline-offset: -5px
+    }
+
+    .btn-main {
+        border-radius: 2px;
+        text-transform: capitalize;
+        font-size: 15px;
+        padding: 10px 19px;
+        cursor: pointer;
+        color: #fff;
+        width: 100%
+    }
+
+    .btn-light {
+        color: #ffffff;
+        background-color: #F44336;
+        border-color: #f8f9fa;
+        font-size: 12px
+    }
+
+    .btn-light:hover {
+        color: #ffffff;
+        background-color: #F44336;
+        border-color: #F44336
+    }
+
+    .btn-apply {
+        font-size: 11px
+    }
+</style>
+</head>
+
+<body>
+
+    <!-- /banner_bottom_agile_info -->
+    <div class="page-head_agile_info_w3l">
+        <div class="container">
+            <h3>View Order</h3>
+            <!--/w3_short-->
+            <div class="services-breadcrumb">
+                <div class="agile_inner_breadcrumb">
+
+                    <ul class="w3_short">
+                        <li><a href="index.html">Home</a><i>|</i></li>
+                        <li>View Order</li>
+                    </ul>
+                </div>
+            </div>
+            <!--//w3_short-->
+        </div>
+    </div>
+    <!-- Upper Part Same Mostly-->
+
+    <!-- View Order -->
+
+    <div class="container-fluidb">
+        <div class="row">
+
+            <div class="card">
+                <div class="table-responsive">
+                    {% if sales %}
+                    <table class="table table-borderless table-shopping-cart">
+                        <thead class="text-muted">
+                            <tr class="small text-uppercase">
+                                <th scope="col" width="220">Product</th>
+                                <th scope="col" width="150">Quantity</th>
+                                <th scope="col" width="120">Total Price</th>
+                                <th scope="col" width="120">Raise a Ticket</th>
+                                
+                                <th scope="col" width="120">Return</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for s in sales %}
+                            <tr>
+                                <td>
+                                    <figure class="itemside align-items-center">
+                                        <div class="aside"><img src="/media/{{s.product_id.product_img}}"
+                                                class="img-sm"></div>
+                                        <figcaption class="info"> <a href="{% url 'single' s.product_id.id  %}"
+                                                class="title text-dark"
+                                                data-abc="true">{{s.product_id.product_name}}</a>
+                                            <p class="text-muted small">SIZE: {{s.product_id.size_id.details}} <br>
+                                                Category: {{s.product_id.cat_id.cat_name}}<br>
+                                                Colour: {{s.product_id.color_id.color_name}}</p>
+                                        </figcaption>
+                                    </figure>
+                                </td>
+                                {% if ret %}
+                            {% for r in ret %} <br><br>
+                                {% if s.qty == r.salRet_qty %}
+                                <td>All Quantity Returned</td>
+                                {% else %}
+                                
+                                <td> {{s.qty}} <br>
+                                <small class="text-muted fw-bold"> {{r.salRet_qty}} Returned </small>
+                            </td>
+                    {% endif %}
+
+                                {% endfor %}
+                                {% else %}
+                                <td>{{s.qty}}</td>
+                                {% endif %}
+                                <td>
+                                    <div class="price-wrap"> <var class="price">{{s.final_price}}</var> <small
+                                            class="text-muted"> {{s.product_id.price}} each </small> </div>
+                                </td>
+                                <td><button class="button-40" data-toggle="modal" data-target="#myModal{{s.id}}"
+                                        role="button"><i class="fa fa-hand-o-up"></i></button></td>
+                                        {% if s.sales_id.sales_status == "Delivered" and s.sales_id.d_date|checkret == True %}
+                                        {% if ret %}
+                                        {% for r in ret %}
+                                        {% if s.qty == r.salRet_qty %}
+                                        <td>Product Returned</td>
+                                        {% else %}
+                                        <td><button class="button-39" role="button" data-toggle="modal"
+                                            data-target="#myModal6">Return</button></td>
+
+                                        {% endif %}
+
+                                        {% endfor %}
+                                        {% else %}
+                                        <td><button class="button-39" role="button" data-toggle="modal"
+                                            data-target="#myModal6">Return</button></td>
+                                        {% endif %}
+                                        
+                                            {% else %}
+                                            <td></td>
+                                        {% endif %}
+                                <div class="modal fade" id="myModal{{s.id}}" tabindex="-1" role="dialog">
+                                    <div class="modal-dialog">
+                                        <!-- Modal content-->
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close"
+                                                    data-dismiss="modal">&times;</button>
+                                            </div>
+                                            <div class="modal-body modal-body-sub_agile">
+                                                <div>
+                                                    <h3 class="agileinfo_sign"><span>Raise an</span> Ticket</h3>
+                                                    <form action="{% url 'makecomp' s.product_id.id %}" id="form3"
+                                                        method="post">
+                                                        {% csrf_token %}
+                                                        <p class="apperror"></p>
+                                                        <p class="done"></p>
+                                                        <div class="styled-input">
+                                                            <label>Title</label><br>
+                                                            <input type="text" name="title" required="">
+                                                            <span></span>
+                                                        </div>
+                                                        <div class="styled-input">
+                                                            <label>Complaint</label><br>
+                                                            <textarea name="complaint"
+                                                                placeholder="Your Complaint here.." rows="3"
+                                                                cols="50"></textarea>
+                                                            <span></span>
+                                                        </div>
+                                                        <input type="submit" value="Submit">
+                                                    </form>
+                                                    <div class="clearfix"></div>
+
+                                                </div>
+
+                                                <div class="clearfix"></div>
+                                            </div>
+                                        </div>
+                                        <!-- //Modal content-->
+                                    </div>
+                                </div>
+                                <!-- Modal6 -->
+                                <div class="modal fade" id="myModal6" tabindex="-1" role="dialog">
+                                    <div class="modal-dialog">
+                                        <!-- Modal content-->
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close"
+                                                    data-dismiss="modal">&times;</button>
+                                            </div>
+                                            <div class="modal-body modal-body-sub_agile">
+                                                <div>
+                                                    <form action="{% url 'returnorder' s.id %}" method="post">
+                                                        {% csrf_token %}
+                                                        <h3 class="agileinfo_sign">Return order<span></span></h3>
+                                                        <div class="styled-input agile-styled-input-top">
+                                                            <label>Qty you bought : {{s.qty}}</label><br><br>
+                                                            <small>Return Qty:</small>
+                                                            <select class="form-control" name="retqty" width="50%">
+                                                                {% if ret %}
+                                                                {% for r in ret %}
+                                                                {% with s.qty|sub:r.salRet_qty as qty %}
+                                                                {% if qty == 1 %}
+                                                                <option value="{{qty}}" selected>{{qty}}</option>
+                                                                {% else %}
+                                                                {% for q in qty|times %}
+                                                                <option value="{{q}}">{{q}}</option>
+                                                                {% endfor %}
+                                                                {% endif %}
+                                                                {% endwith %}
+                                                                {% endfor %}
+                                                                {% else %}
+                                                                {% for q in s.qty|times %}
+                                                                <option value="{{q}}">{{q}}</option>
+                                                                {% endfor %}
+
+                                                                {% endif %}
+                                                            </select>
+                                                            <span></span>
+                                                        </div>
+                                                        <div class="styled-input">
+                                                            <label>Give Your Reason</label><br>
+                                                            <textarea style="margin-top: 30px;" class="form-control"
+                                                                name="retmsg" placeholder="Type here.." rows="3"
+                                                                cols="65"></textarea>
+                                                            <span></span>
+                                                        </div>
+                                                        <input type="submit" value="Submit the Query">
+                                                    </form>
+                                                    <div class="clearfix"></div>
+
+                                                </div>
+
+                                                <div class="clearfix"></div>
+                                            </div>
+                                        </div>
+                                        <!-- //Modal content-->
+                                    </div>
+                                </div>
+                                <!-- //Modal6 -->
+
+                            </tr>
+                            {% endfor %}
+
+                        </tbody>
+                    </table>
+                    {% endif %}
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+    <!-- /View Order-->
+
+
+
+
+
+
+    </div>
+    <!-- Modal5 -->
+
+    <!-- //Modal5 -->
+    <script type="text/javascript">
+        jQuery(document).ready(function ($) {
+            $(".scroll").click(function (event) {
+                event.preventDefault();
+                $('html,body').animate({ scrollTop: $(this.hash).offset().top }, 1000);
+            });
+        });
+    </script>
+    <!-- here stars scrolling icon -->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            /*
+                var defaults = {
+                containerID: 'toTop', // fading element id
+                containerHoverID: 'toTopHover', // fading element hover id
+                scrollSpeed: 1200,
+                easingType: 'linear' 
+                };
+            */
+
+            $().UItoTop({ easingType: 'easeOutQuart' });
+
+        });
+        //For Complaint
+        $("#form3").submit(function (e) {
+            $(".apperror").html("Complaint Submited Successfuly!... <b> Do Not Refresh Page </b>");
+            $(".done").html("We'll Shortly Resolve Your Complaint ");
+            e.preventDefault(e);
+            setTimeout(function () {
+                console.log("IN ")
+                $('#form3').unbind('submit').submit();
+            }, 5000)
+        });
+
+    </script>
+    <!-- //here ends scrolling icon -->
+
+    <!-- for bootstrap working -->
+    {% endblock body%}

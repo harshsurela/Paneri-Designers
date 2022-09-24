@@ -1,0 +1,140 @@
+{% extends "Mainadmin/index.html" %}
+{% load static %}
+{% block body %}
+      <!-- Main Content -->
+      <div class="main-content">
+        <section class="section">
+          <div class="section-body">
+            <form action="{% url 'rp' %}" id="sup" method="POST">
+              {% csrf_token %}
+            <!-- add content here -->
+          <div class="row ">
+            
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
+              <div class="card">
+                <div class="card-statistic-4">
+                  <div class="align-items-center justify-content-between">
+                    <div class="row ">
+                      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
+                        <div class="card-content">
+                          <h5 class="font-15"> About: </h5>
+                          <h2 class="mb-3 font-18">
+                            <select name="field" class="form-control" id="field">
+                              <option select="selected">--Select--</option>
+                              <option name= "customer" value="customer">Customer</option>
+                              <option name= "purchase" value="purchase">Purchase</option>
+                              <option name= "sales" value="sales">Sales</option>
+                            </select>
+                          </h2>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
+              <div class="card">
+                <div class="card-statistic-4">
+                  <div class="align-items-center justify-content-between">
+                    <div class="row ">
+                      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
+                        <div class="card-content">
+                          <h5 class="font-15">Start Date:</h5>
+                          <h2 class="mb-3 font-18"><input  name="sdate" type="date"></h2>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
+              <div class="card">
+                <div class="card-statistic-4">
+                  <div class="align-items-center justify-content-between">
+                    <div class="row ">
+                      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
+                        <div class="card-content">
+                          <h5 class="font-15">End Date:</h5>
+                          <h2 class="mb-3 font-18"><input  name="edate" type="date"></h2>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+            <center class="ml-1 row">
+              <button class="btn btn-primary mr-3" type="submit" id="swal-12">Generate Report</button>
+              <a href="#" class="btn btn-secondary">Clear</a>
+            </center>
+              <br>
+          </form>
+          {% comment %} <div class="row">
+            <div class="col-12">
+              <div class="card">
+                <div class="card-header">
+                  <h4>Generated Report</h4>
+                  <div class="card-header-form">
+                    <form id="sup">
+                      <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search">
+                        <div class="input-group-btn">
+                          <button class="btn btn-primary"><i class="fas fa-search"></i></button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+                <div class="card-body ">
+                  {% if report %}
+
+                  <div class="table-responsive">
+                      
+                    <table class="table table-striped">
+                      <tr>
+                        <th>Report Number</th>
+                        <th>Report Name</th>
+                        <th>Generated Date</th>
+                        <th>Download</th>
+                        <th class="text-center">Delete</th>
+                      </tr>
+                      {% for rp in report  %}
+                        
+                      <tr>
+                        <td>{{forloop.counter}}</td>
+                        <td class="text-truncate">{{rp.report_name}}</td>
+                        <td>{{rp.report_date}}</td>
+                        <td><a href="{% url 'downloadPdf' rp.id %}" class="btn btn-outline-primary">Download PDF</a></td>
+                        <td class="p-0 text-center">
+                            <button class="btn btn-primary swal-13" value="{{rp.id}}">Delete</button>
+                        </td>
+                      </tr>
+                      {% endfor %}
+                       
+                    </table>
+                    
+                  {% else %}
+                  <h4>No Reports Are Generated</h4>
+                  {% endif %}
+                </div>
+             </div>   
+           </div>
+          </div> {% endcomment %}
+            <!-- end content here-->
+          </div>
+        </section>
+      </div>
+      <footer class="main-footer">
+        <div class="footer-right">
+        </div>
+      </footer>
+    </div>
+  </div>
+
+</body>
+{% endblock body%}
+
+</html>

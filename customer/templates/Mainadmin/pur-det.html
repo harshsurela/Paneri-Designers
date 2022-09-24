@@ -1,0 +1,90 @@
+{% extends "Mainadmin/index.html" %}
+{% load static %}
+{% load mathfilters %}
+{% block body %}
+     
+
+<!-- Main Content -->
+<div class="main-content">
+  <section class="section">
+    <div class="section-body">
+      <!-- add content here -->
+      <div class="row">
+        <div class="col-12 col-md-12 col-lg-12">
+          <div class="card">
+            <div class="card-header">
+              <h4>Details of Purchase</h4>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                {% if pur %}
+                <table class="table table-bordered table-md">
+                  <tr>
+                    <th>Sr.</th>
+                    <th>Name</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Unit of Measurement</th>
+                    <th>Total Price</th>
+                  </tr>
+                  {% for p in pur  %}
+                  <tr>
+                    <td>{{p.id}}</td>
+                    <td>{{p.raw_matId.raw_name}}</td>
+                    <td>{{p.pur_qty}}</td>
+                    <td>{{p.pur_price}}</td>
+                    <td>{{p.unit.unitOfmes}}</td>
+                    <td>{{p.pur_price|mul:p.pur_qty}}</td>
+                  </tr>
+                  {% endfor %}
+                </table>
+                {% endif %}
+              </div>
+              <button type="button" class="btn btn-primary pull-right">Back</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- end content here -->
+    </div>
+  </section>
+  <!-- Vertically Center -->
+  <div class="modal fade" id="exampleModalCenter2" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalCenterTitle">Add Raw Material</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="modal-body">
+          <form id="sup">
+            <label>Material</label>
+            <input type="text" style="margin-top: 10px;" class="form-control" readonly>
+            <label style="margin-top:10px ;">Color</label>
+            <input class="form-control" type="color" readonly>
+            <label style="margin-top:10px ;">Quantity</label>
+            <input class="form-control" type="number" readonly>
+            <label style="margin-top:10px ;">Unit of Measurement</label>
+            <input type="text" class="form-control" readonly>
+          </form>
+        </div>
+        <div class="modal-footer bg-whitesmoke br">
+          <button type="button" class="btn btn-primary">Add</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end modal-->
+</div>
+<!-- end main content -->
+
+      <footer class="main-footer">
+        <div class="footer-right">
+        </div>
+      </footer>
+    </div>
+  </div>
+  {% endblock body%}

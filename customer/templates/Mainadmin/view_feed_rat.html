@@ -1,0 +1,48 @@
+{% extends "Mainadmin/index.html" %}
+{% load static %}
+{% block body %}
+      <!-- Main Content -->
+      <div class="main-content">
+        <section class="section">
+          <div class="section-body">
+            <!-- add content here -->
+             <div class="card">
+                  <div class="card-header">
+                    <h4>Feedback and Ratings</h4>
+                  </div>
+                  <div class="card-body">
+                    <div class="form-group">
+                      <label>Product Name</label>
+                      <input type="text" class="form-control" pattern="[a-zA-Z\s]" title="Name should be in aplphabets and spaces only!" value="{{feed.product_id.product_name}}" readonly>
+                    </div>
+                    <div class="form-group">
+                      <label>Product Image</label><br>
+                      <div style="width: 200px; max-width: 300px;">
+                        <img src="/media/{{feed.product_id.product_img}}" class="img-thumbnail rounded"  alt="image here">
+                        </div>
+                    </div> 
+                    <div class="form-group">
+                      <label>Feedback Title</label>
+                      <input type="text" class="form-control" value="{{feed.fb_title}}" readonly>
+                    </div>
+                    <div class="form-group">
+                      <label>Feedback Description</label>
+                      <input type="text" class="form-control" value="{{feed.fb_desc}}" readonly>
+                    </div>
+                    <div class="form-group">
+                      <label>Ratings</label>
+                      <input type="text" class="form-control" value="{{rat.value}}" readonly>
+                    </div>
+                </div>
+              </div>
+            <!-- content end here -->
+          </div>
+        </section>
+      </div>
+      <footer class="main-footer">
+        <div class="footer-right">
+        </div>
+      </footer>
+   {% endblock body %}
+</body>
+</html>

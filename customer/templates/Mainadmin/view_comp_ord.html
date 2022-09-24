@@ -1,0 +1,106 @@
+{% extends "Mainadmin/index.html" %}
+{% load static %}
+{% load my_filters %}
+
+{% block body %}
+      <!-- Main Content -->
+      <div class="main-content">
+        <section class="section">
+          <div class="section-body">
+            <!-- add content here -->
+             <div class="card">
+                  <div class="card-header">
+                    <h4>View Completed Orders</h4>
+                    
+                  </div>``
+                  <div class="card-body">
+                    <div class="form-group">
+                      <label>Product'(s) Name</label>
+                      <input type="text" class="form-control" pattern="[a-zA-Z\s]" title="Name should be in aplphabets and spaces only!" value="{{order.product_id.product_name}}" readonly>
+                    </div>
+                    <div class="form-group">
+                      <label>Product Image</label><br>
+                      <div style="width: 200px; max-width: 300px;">
+                        <img src="/media/{{order.product_id.product_img}}" class="img-thumbnail rounded"  alt="image here">
+                        </div>
+                    </div> 
+                    <div class="form-group">
+                      <label>Product Size</label>
+                      <input type="text" class="form-control" value="{{order.product_id.size_id.details}}" readonly>
+                    </div>
+                    <div class="form-group">
+                      <label>Product Color</label>
+                      <input type="text" class="form-control" value="{{order.product_id.color_id.color_name}}" readonly>
+                    </div>
+                    <div class="form-group">
+                      <label>Applied Discount</label>
+                      {% if order.product_id.discount|perc == 0 %}
+                      <input type="text" class="form-control" value="No Discount Applied" readonly>
+                        {% else %}
+                      <input type="text" class="form-control" value="{{order.product_id.discount|perc}}%" readonly>
+                      {% endif %}
+                    </div>
+                    <div class="form-group">
+                      <label>Total Amount</label>
+                      <input type="text" onkeypress="return isNumberKey(event)" class="form-control" value="{{order.final_price}}" readonly>
+                    </div> 
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12 col-md-12 col-lg-12">
+                  <div class="card">
+                    <div class="card-header">
+                      <h4>Used Materials</h4>
+                    </div>
+                    <div class="card-body">
+                      <div class="table-responsive">
+                        <table class="table table-bordered table-md">
+                          <tr>
+                            <th>Sr.</th>
+                            <th>Name</th>
+                            <th>Quantity</th>
+                            <th>Unit of Measurement</th>
+                          </tr>
+                          <tr>
+                            <td>1</td>
+                            <td>Cotton Fabric</td>
+                            <td>5</td>
+                            <td>Meter</td>
+                          </tr>
+                          <tr>
+                            <td>2</td>
+                            <td>Measure tape</td>
+                            <td>2</td>
+                            <td>Tape</td>
+                          </tr>
+                          <tr>
+                            <td>3</td>
+                            <td>Linen Fabric</td>
+                            <td>3</td>
+                            <td>Meter</td>
+                          </tr>
+                          <tr>
+                            <td>4</td>
+                            <td>Thread</td>
+                            <td>3</td>
+                            <td>Piece</td>
+                          </tr>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <!-- content end here -->
+          </div>
+        </section>
+      </div>
+      <footer class="main-footer">
+        <div class="footer-right">
+        </div>
+      </footer>
+ 
+  {% endblock body %}
+
+</body>
+</html>

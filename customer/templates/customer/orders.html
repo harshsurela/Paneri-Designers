@@ -1,0 +1,141 @@
+{% extends 'customer/base.html' %}
+{% load static %}
+{% load my_filters %}
+
+{% block title %}
+<title>Orders</title>
+{% endblock title %}
+{% block body %}
+    
+   
+
+    <!-- /banner_bottom_agile_info -->
+    <div class="page-head_agile_info_w3l">
+        <div class="container">
+            <h3>My <span>Orders</span></h3>
+            <!--/w3_short-->
+            <div class="services-breadcrumb">
+                <div class="agile_inner_breadcrumb">
+
+                    <ul class="w3_short">
+                        <li><a href="index.html">Home</a><i>|</i></li>
+                        <li>Orders</li>
+                    </ul>
+                </div>
+            </div>
+            <!--//w3_short-->
+        </div>
+    </div>
+    <!-- content-->
+    <div class="banner_bottom_agile_info">
+        <div class="container">
+            <div class="bs-docs-example">
+                {% if sales %}
+                
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Order Id</th>
+                            <th>Order Date</th>
+                            <th>Order Status</th>
+                            <th>View</th>
+                            <th>Cancel</th>
+                            <th>Invoice</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for s in sales %}
+                        <tr>
+                            <td>{{s.id}}</td>
+                            <td>{{s.sales_date}}</td>
+                            <td><b>{{s.sales_status}}</b></td>
+                            <td><a href="{% url 'view_ord' s.id %}"><button class="button-38" role="button">View</button></a>
+                            </td>
+                            {% if s.sales_status == 'pending'  %}
+                            {% if s.sales_date|checkcancel == True %}
+                            <td><button class="button-38 cancelsale" role="button" value="{{s.id}}">Cancel Order</button></td>
+                            </td>
+                            {% else %}
+                            <td></td>
+                            {% endif %}
+                            {% else %}
+                            <td></td>
+                            {% endif %}
+                            <td><a href="{% url 'downinvoice' s.id %}"><button class="button-38" role="button">Download Invoice</button></a>
+
+                            
+                            
+                        </tr>
+                        {% endfor %}
+                        
+                    </tbody>
+                </table>
+                <h5 style="margin-left:20px;"><strong>Note :</strong> Orders can be cancelled only within of 24 hours!</h5>
+                {% else %}
+                <h4 class="text-center">You Have Not Placed Any Order</h4>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- //content -->
+
+    </div>
+    {% endblock body %}
+    {% block js %}
+    <script>
+    $(".cancelsale").click(function () {
+        swal({
+          title: 'Are you sure You Want To Cancel Your Order?',
+          icon: 'warning',
+          buttons: true,
+          dangerMode: true,
+        })
+          .then((willDelete) => {
+            if (willDelete) {
+              swal('Poof! Record has been deleted!', {
+                icon: 'success',
+              });
+              var url="{% url 'cancelsale' 123 %}";
+             var id=$(this).attr("value");
+             console.log(id);
+             window.location.href=url.replace('123', id);
+            } else {
+              swal('You Saved Your Order !!');
+            }
+          });
+      });
+    </script>
+      {% endblock js %}
+    <!-- //footer -->
+  
+    
+    <!-- Custom-JavaScript-File-Links -->
+    <!---->
+    <!-- start-smoth-scrolling -->
+    <script>
+       
+        // You can also use "$(window).load(function() {"
+        $(function () {
+            // Slideshow 4
+            $("#slider3").responsiveSlides({
+                auto: true,
+                pager: true,
+                nav: false,
+                speed: 500,
+                namespace: "callbacks",
+                before: function () {
+                    $('.events').append("<li>before event fired.</li>");
+                },
+                after: function () {
+                    $('.events').append("<li>after event fired.</li>");
+                }
+            });
+        });
+       
+    </script>
+    <!-- here stars scrolling icon -->
+    
+    <!-- //here ends scrolling icon -->
+
+    <!-- for bootstrap working -->

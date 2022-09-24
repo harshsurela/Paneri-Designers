@@ -1,0 +1,974 @@
+{% load static %}
+	
+<!DOCTYPE html>
+<html>
+
+<head>
+	{% block title %}
+	{% endblock title %}
+  	<!--tags -->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="keywords" content="Paneri Designers" />
+	<!--/ tags -->
+	<link href="{% static 'customer/assets/css/bootstrap.css' %} " rel="stylesheet" type="text/css" media="all" />
+	<link href="{% static 'customer/assets/css/style2.css' %} " rel="stylesheet" type="text/css" media="all" />
+	<link href="{% static 'customer/assets/css/font-awesome.css' %} " rel="stylesheet">
+	<link href="{% static 'customer/assets/css/easy-responsive-tabs.css' %} " rel='stylesheet' type='text/css' />
+	<link href="{% static 'customer/assets/css/flexslider.css' %} " rel='stylesheet' media="screen" type="text/css" />
+	<script type="text/javascript" src="{% static 'customer/assets/js/admin/jquery-2.1.4.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'customer/assets/js/page/sweetalert.js' %} "></script>
+	<script type="text/javascript" src="{% static 'customer/assets/js/page/sweetalert.min.js' %} "></script>
+	<!-- for bootstrap working -->
+	<!--<link href="//fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800" rel="stylesheet">
+	<link
+		href='//fonts.googleapis.com/css?family=Lato:400,100,100italic,300,300italic,400italic,700,900,900italic,700italic'
+		rel='stylesheet' type='text/css'>-->
+</head>
+<style>
+	
+/* Slideshow container */
+.slideshow-container {
+  max-width: 1000px;
+  position: relative;
+  margin: auto;
+}
+
+/* Next & previous buttons */
+.prev, .next {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  width: auto;
+  padding: 16px;
+  margin-top: -22px;
+  color: black;
+  font-weight: bold;
+  font-size: 18px;
+  transition: 0.6s ease;
+  border-radius: 0 3px 3px 0;
+  user-select: none;
+}
+
+/* Position the "next button" to the right */
+.next {
+  right: 0;
+  border-radius: 3px 0 0 3px;
+}
+
+/* On hover, add a black background color with a little bit see-through */
+.prev:hover, .next:hover {
+  background-color: rgba(0,0,0,0.8);
+}
+
+/* On smaller screens, decrease text size */
+@media only screen and (max-width: 300px) {
+  .prev, .next,.text {font-size: 11px}
+}
+
+.badge {
+  padding-left: 9px;
+  padding-right: 9px;
+  -webkit-border-radius: 9px;
+  -moz-border-radius: 9px;
+  border-radius: 9px;
+}
+
+.label-warning[href],
+.badge-warning[href] {
+  background-color: #c67605;
+}
+#lblCartCount {
+    font-size: 12px;
+    background: black;
+    color: #fff;
+    padding: 0 5px;
+    vertical-align: top;
+    margin-left: -25px; 
+}
+	#toTop {
+		display: none;
+		text-decoration: none;
+		position: fixed;
+		bottom: 55px;
+		right: 2%;
+		overflow: hidden;
+		z-index: 999; 
+		width: 32px;
+		height: 32px;
+		border: none;
+		text-indent: 100%;
+		background: url("static/customer/assets/img/up_arrow.png") no-repeat 0px 0px;
+	}
+	#toTopHover {
+		width: 32px;
+		height: 32px;
+		display: block;
+		overflow: hidden;
+		float: right;
+		opacity: 0;
+		-moz-opacity: 0;
+		filter: alpha(opacity=0);
+
+	}
+	.google{border: none;
+	padding: 10px 40px 10px;
+	font-size: 14px;
+	outline: none;
+	text-transform: uppercase;
+	margin: 0 0 0 -4px;
+	font-weight: 700;
+	letter-spacing: 1px;
+	background: #111;
+	color: #fff;
+	}
+</style>
+<body>
+	<!-- header -->
+	
+	<!-- /header -->
+	<!-- header-bot -->
+	<div class="header-bot">
+		<div class="header-bot_inner_wthreeinfo_header_mid">
+			<!-- header-bot -->
+			<div class="col-md-4 header-middle">
+				<form action="{% url 'searchprod' %}" method="post">
+					{% csrf_token %}
+					
+					<input type="search" name="search" placeholder="Search here..." required>
+					<button style="border: hidden;background: none;position: relative;bottom: 3px;cursor: pointer;"><i class="fa fa-search"></i></button>
+					<button style="border: hidden;background: none;position: relative;bottom: 3px;cursor: pointer;"><i class="fa fa-microphone"></i></button>
+					
+					<div class="clearfix"></div>
+				</form>
+			</div>
+			<div class="col-md-4 logo_agile">
+				<h1><a href="{% url 'home' %}"><span>P</span>aneri<br> Designers</a></h1>
+				
+			</div>
+			<div class="col-md-4 agileits-social top_content">
+				<ul class="social-nav model-3d-0 footer-social w3_agile_social">
+					{% if request.user.is_authenticated and request.user.is_superuser == False %}
+					<li style="white-space: nowrap;" data-bs-toggle="tooltip" data-bs-placement="top" title="User Profile"><a href="{% url 'userprofile' %}" class="facebook" >
+							<div class="front"><i class="fa fa-user" aria-hidden="true" ></i></div>
+							<div class="back"><i class="fa fa-user" aria-hidden="true"></i></div>
+						</a></li>
+						
+					<li style="white-space: nowrap;" data-bs-toggle="tooltip" data-bs-placement="top" title="Logout"><a href="{% url 'userlogout' %}" class="instagram">
+							<div class="front"><i class="fa fa-power-off" aria-hidden="true"></i></div>
+							<div class="back"><i class="fa fa-power-off" aria-hidden="true"></i></div>
+						</a></li>
+						{% else %}
+						<li style="white-space: nowrap;" data-bs-toggle="tooltip" data-bs-placement="top" title="Sign In"><a href="#" data-toggle="modal" data-target="#myModal" class="facebook">
+							<div class="front"><i class="fa fa-lock" aria-hidden="true"></i></div>
+							<div class="back"><i class="fa fa-key" aria-hidden="true"></i></div>
+						</a></li>
+					<li style="white-space: nowrap;" data-bs-toggle="tooltip" data-bs-placement="top" title="Sign Up"><a href="#" data-toggle="modal" data-target="#myModal2" class="instagram">
+						
+					
+							<div class="front"><i class="fa fa-user-plus" aria-hidden="true"></i></div>
+							<div class="back"><i class="fa fa-user-plus" aria-hidden="true"></i></div>
+						</a></li>
+						{% endif %}
+				</ul>
+			</div>
+			<!-- header-bot -->
+			<div class="clearfix"></div>
+		</div>
+	</div>
+	<!-- //header-bot -->
+	<!-- banner -->
+	<div class="ban-top">
+		<div class="container">
+			<div class="top_nav_left">
+				<nav class="navbar navbar-default">
+					<div class="container-fluid">
+						<!-- Brand and toggle get grouped for better mobile display -->
+						<div class="navbar-header">
+							<button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+								data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+								<span class="sr-only">Toggle navigation</span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+							</button>
+						</div>
+						<!-- Collect the nav links, forms, and other content for toggling -->
+						<div class="collapse navbar-collapse menu--shylock" id="bs-example-navbar-collapse-1">
+							<ul class="nav navbar-nav menu__list">
+								<li class=" menu__item"><a class="menu__link"
+										href="{% url 'home' %}">Home <span class="sr-only">(current)</span></a></li>
+								<li class=" menu__item"><a href="{% url 'womens' %}" class="menu__link">Products </a></li>
+								{% if user.is_authenticated %}
+								<li class=" menu__item"><a class="menu__link" data-toggle="modal"
+										data-target="#myModal3" href="">Book Appointment</a></li>
+										{% else %}
+										<li class=" menu__item"><a class="menu__link" data-toggle="modal"
+											data-target="#myModal" href="">Book Appointment</a></li>
+										{% endif %}
+										{% if user.is_authenticated %}
+										<li class=" menu__item"><a class="menu__link" href="{% url 'myorders' %}">My Orders</a></li>
+										{% else %}
+								<li class=" menu__item"><a class="menu__link" href="" data-toggle="modal"
+									data-target="#myModal">My Orders</a></li>
+										
+										{% endif %}
+								<li class=" menu__item"><a class="menu__link" href="{% url 'aboutus' %}">About and Contact Us</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</nav>
+			</div>
+			<div class="top_nav_right">
+				<div class="wthreecartaits wthreecartaits2 cart cart box_1">
+					{% if user.is_authenticated %}
+					<a href="{% url 'cart' %}"><button class="w3view-cart" type="submit" name="submit" value=""><i
+								class="fa fa-cart-arrow-down" aria-hidden="true"></i></button></a>
+								{% else %}
+								<a href="" data-toggle="modal"
+								data-target="#myModal" ><button class="w3view-cart" type="submit" name="submit" value=""><i
+									class="fa fa-cart-arrow-down"></i></button></a>
+									{% endif %}
+								<span class='badge badge-warning' id='lblCartCount'> </span>
+								{% if user.is_authenticated %}
+								<a href="{% url 'wishlist' %}" style="margin-left:5px"><button class="w3view-cart" type="submit" name="submit" value=""><i
+								class="fa fa-heart-o"></i></button></a>
+								{% else %}
+								<a href="" data-toggle="modal"
+								data-target="#myModal" ><button class="w3view-cart" type="submit" name="submit" value=""><i
+									class="fa fa-heart-o"></i></button></a>
+									{% endif %}
+								
+
+				</div>
+			</div>
+			<div class="clearfix"></div>
+		</div>
+	</div>
+
+
+	<!-- //banner-top -->
+	<!-- Modal1 -->
+	<div class="modal fade" id="myModal" tabindex="-1" >
+		<div class="modal-dialog">
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				<div class="modal-body modal-body-sub_agile">
+					<div>
+						<h3 class="agileinfo_sign">Sign In <span>Now</span></h3>
+						<p class="button" id="loginrror"></p>
+						<p class="button" id="lolgindone"></p>
+						<form action="{% url 'userlogin' %}" method="post" id="form1">
+							{% csrf_token %}
+							<div class="styled-input agile-styled-input-top">
+								<input type="text" name="username" id="uname" required="">
+								<label>Username</label>
+								<span></span>
+							</div>
+							<div class="styled-input">
+								<input type="password" name="password" id="password" required="">
+								<label>Password</label>
+								<span></span>
+							</div>
+							<input type="submit" value="Sign In" >
+							
+						</form>
+						<ul class="social-nav model-3d-0 footer-social w3_agile_social top_agile_third">
+
+						</ul>
+						<div class="clearfix"></div>
+						<p><a href="{% url 'password_reset' %}"> Forgot Password</a></p>
+						<p><a href="#" data-dismiss="modal" data-toggle="modal" data-target="#myModal2"> Don't have an account?</a></p>
+
+					</div>
+
+					<div class="clearfix"></div>
+				</div>
+			</div>
+			<!-- //Modal content-->
+		</div>
+	</div>
+	<!-- //Modal1 -->
+
+	<!-- Modal2 -->
+	<div class="modal fade" id="myModal2" tabindex="-1" style="overflow-y:auto;" role="dialog">
+		<div class="modal-dialog">
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				<div class="modal-body modal-body-sub_agile">
+					<div>
+						<h3 class="agileinfo_sign">Sign Up <span>Now</span></h3>
+						<p class="text-danger" id="error"></p>
+						<br>
+						<form action="{% url 'userregister' %}" method="post" enctype="multipart/form-data">
+							{% csrf_token %}
+							<div class="styled-input agile-styled-input-top">
+								<input type="text" name="username" id="username" required="">
+								<label>Username</label>
+								<span></span>
+							</div>
+							<div class="styled-input">
+								<input type="text" name="fname" required="">
+								<label>First Name</label>
+								<span></span>
+							</div>
+							<div class="styled-input">
+								<input type="text" name="lname" required="">
+								<label>Last Name</label>
+								<span></span>
+							</div>
+							<div class="styled-input">
+								<input type="text" name="phone"  pattern="[0-9]{10}" required="">
+								<label>Phone</label>
+								<span></span>
+							</div>
+							<div class="styled-input">
+								<input type="email" id="email" name="email" required="">
+								<label>Email</label>
+								<span></span>
+							</div>
+							<div class="styled-input">
+								<label>Gender</label>
+								<br>
+								<input style="margin-top: 10px;"  name="gender" type="radio" value="male" required=""> Male
+								<input style="margin-left: 20px;"  name="gender"  type="radio" value="female" required=""> Female
+								<span></span>
+							</div>
+							<div class="styled-input">
+								<label>DOB</label><br>
+								<input style="width: 90%;" type="date" name="dob" min='1970-01-01' max='2005-01-01' required="">
+								<span></span>
+							</div>
+							<div class="styled-input">
+								<label>Address</label><br>
+								<textarea name="address" rows="3" cols="50"></textarea>
+								<span></span>
+							</div>
+							<div class="styled-input">
+								<select id="country-data" class="form-control dropdown" name="country">
+                        <option selected disabled>Choose a Country</option>
+
+                      </select>
+								<span></span>
+							</div>
+							<div class="styled-input">
+								<select name="state" class="form-control dropdown" id="state-data">
+									<option selected disabled>Choose a State</option>
+			
+								  </select>
+								<span></span>
+							</div>
+							<div class="styled-input">
+								<select name="city" class="form-control dropdown" id="city-data">
+									<option selected disabled>Choose a City</option>
+								  </select>
+								<span></span>
+							</div>
+							<div class="styled-input">
+								<select name="area" id="area-data" class="form-control dropdown">
+									<option selected disabled>Choose a Area</option>
+									</select>
+								<span></span>
+							</div>
+							<div class="styled-input">
+								<input type="text" name="pin" required="">
+								<label>Pincode</label>
+								<span></span>
+							</div>
+							<div class="styled-input">
+								<input type="password" name="password" id="pass" required="">
+								<label>Password</label>
+								<span></span>
+							</div>
+							<div class="styled-input">
+								<input type="password" name="cpassword" id="cpass" required="">
+								<label>Confirm Password</label>
+								<span></span>
+							</div>
+							<div class="styled-input">
+								<label>Profile Picture</label><br>
+								<input type="file" name="propic" class="form-control">
+								<span></span>
+							</div>
+							<input type="submit" value="Sign Up">
+						</form>
+						<ul class="social-nav model-3d-0 footer-social w3_agile_social top_agile_third">
+
+						</ul>
+						<div class="clearfix"></div>
+						<p><a href="" data-toggle="modal" data-dismiss="modal" data-target="#myModal">Alrady Have An Account ? Sign In!</a></p><br>
+						<p><a href="">By clicking register, I agree to your terms</a></p>
+
+					</div>
+					<div class="clearfix"></div>
+				</div>
+			</div>
+			<!-- //Modal content-->
+		</div>
+	</div>
+	<!-- //Modal2 -->
+	<!-- Modal3 -->
+	<div class="modal fade" id="myModal3" tabindex="-1" role="dialog">
+		<div class="modal-dialog">
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				<div class="modal-body modal-body-sub_agile">
+					<div>
+						<h3 class="agileinfo_sign"><span>Book an</span> Appointment</h3>
+						<p class="button" id="apperror"></p>
+						<p class="button" id="done"></p>
+						<form action="{% url 'saveappo' %}" method="post" id="form2">
+							{% csrf_token %}
+							<div class="styled-input">
+								<label>Date</label><br>
+								<input style="width: 98%;" type="date" name="date" id="appdate" required="">
+								<span></span>
+							</div>
+							<div class="styled-input">
+								<label>Time</label><br>
+								<input style="width: 98%;" type="time" name="time" id="apptime" required="">
+								<span></span>
+							</div>
+							<div class="styled-input">
+								<label>Description</label>
+								<br>
+								<textarea name="desc" rows="3" cols="65" class="form-control mt-3" placeholder="Tell us About it in Brief!"></textarea>
+							</div>
+							<input type="submit" id="book" value="Book Appointment">
+						</form>
+						<div class="clearfix"></div>
+					</div>
+			
+
+					<div class="clearfix"></div>
+				</div>
+			</div>
+			<!-- //Modal content-->
+		</div>
+	</div>
+	<!-- //Modal3 -->
+	
+	{% block body %}
+	
+	{% endblock body %}
+	<!--/grids-->
+	
+	<div class="coupons " >
+		<div class="coupons-grids text-center">
+			<div class="w3layouts_mail_grid">
+				<div class="col-md-3 w3layouts_mail_grid_left"></div>
+				<div class="col-md-3 w3layouts_mail_grid_left">
+					<div class="w3layouts_mail_grid_left1 hvr-radial-out">
+						<i class="fa fa-headphones" aria-hidden="true"></i>
+					</div>
+					<div class="w3layouts_mail_grid_left2">
+						<h3>24/7 SUPPORT</h3>
+						<p>We are here for you every minute,every day!</p>
+					</div>
+				</div>
+				<div class="col-md-3 w3layouts_mail_grid_left">
+					<div class="w3layouts_mail_grid_left1 hvr-radial-out">
+						<i class="fa fa-shopping-bag" aria-hidden="true"></i>
+					</div>
+					<div class="w3layouts_mail_grid_left2">
+						<h3>MONEY BACK GUARANTEE</h3>
+						<p>Total Money Back Guarantee</p>
+					</div>
+				</div>
+				<div class="col-md-3 w3layouts_mail_grid_left"></div>
+				<div class="clearfix"> </div>
+			</div>
+
+		</div>
+	</div>
+	<!--grids-->
+	<!-- footer -->
+	<div class="footer">
+		<div class="footer_agile_inner_info_w3l">
+			<div class="col-md-3 footer-left">
+				<h2><a href="index.html"><span>P</span>aneri Designers </a></h2>
+				<p>We are here to provide you
+						hand made product which are better than ready made Products.
+							We offer you Our Best Quality to compare your highest hopes!
+				</p>
+				<ul class="social-nav model-3d-0 footer-social w3_agile_social two"></ul>
+			</div>
+			<div class="col-md-9 footer-right">
+				<div class="sign-grds">
+					<div class="col-md-4 sign-gd">
+						<h4>Our <span>Information</span> </h4>
+						<ul>
+							<li><a href="index.html">Home</a></li>
+							<li><a href="womens.html">Products</a></li>
+							<li><a href="about.html">About and Contact Us</a></li>
+							<li><a href="">Book Appointment</a></li>
+						</ul>
+					</div>
+
+					<div class="col-md-5 sign-gd-two">
+						<h4>Store <span>Information</span></h4>
+						<div class="w3-address">
+							<div class="w3-address-grid">
+								<div class="w3-address-left">
+									<i class="fa fa-phone" aria-hidden="true"></i>
+								</div>
+								<div class="w3-address-right">
+									<h6>Phone Number</h6>
+									<p id="phone"></p>
+								</div>
+								<div class="clearfix"> </div>
+							</div>
+							<div class="w3-address-grid">
+								<div class="w3-address-left">
+									<i class="fa fa-envelope" aria-hidden="true"></i>
+								</div>
+								<div class="w3-address-right">
+									<h6>Email Address</h6>
+									<p><a href="mailto:" id="compemail"></a></p>
+								</div>
+								<div class="clearfix"> </div>
+							</div>
+							<div class="w3-address-grid">
+								<div class="w3-address-left">
+									<i class="fa fa-map-marker" aria-hidden="true"></i>
+								</div>
+								<div class="w3-address-right">
+									<h6>Location</h6>
+									<p id="address">
+									</p>
+								</div>
+								<div class="clearfix"> </div>
+							</div>
+						</div>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+			</div>
+
+			<div class="clearfix"></div>
+		</div>
+		<p class="copy-right">&copy 2022 Paneri Designers. All rights reserved | Design by <a href="index.html">Paneri
+				Designers</a></p>
+	</div>
+
+	<!-- //footer -->
+	
+		
+	<!-- js -->
+	
+	
+	<!-- //js -->
+	<script src="{% static 'customer/assets/js/admin/modernizr.custom.js' %} "></script>
+	<!-- Custom-JavaScript-File-Links -->
+
+	<!-- stats -->
+	<script src="{% static 'customer/assets/js/admin/jquery.waypoints.min.js' %} "></script>
+	<script src=" {% static 'customer/assets/js/admin/jquery.countup.js' %} "></script>
+	<script src="{% static 'customer/assets/js/imagezoom.js' %}"></script>
+	<script src="{% static 'customer/assets/js/admin/easy-responsive-tabs.js' %}"></script>
+	<script src="{% static 'customer/assets/js/admin/jquery.flexslider.js' %}"></script>
+
+	<script type="text/javascript" src="{% static 'customer/assets/js/admin/jquery.easing.min.js' %} "></script>
+	<script type="text/javascript" src="{% static 'customer/assets/js/core/bootstrap.bundle.min.js' %} "></script>
+	
+	{% if messages %}
+    {% for message in messages %}
+    <script>
+		$(document).ready(function(){
+			swal("{{message.tags}}", "{{message}}", "{{message.tags}}");
+			
+			
+		});
+		
+	</script>
+    {% endfor %}
+
+{% endif %}
+	
+	<script>
+		$(document).ready(function () {
+
+			$('#horizontalTab').easyResponsiveTabs({
+				type: 'default', //Types: default, vertical, accordion           
+				width: 'auto', //auto or any width like 600px
+				fit: true,   // 100% fit in a container
+				closed: 'accordion', // Start closed if in accordion view
+				activate: function (event) { // Callback function if tab is switched
+					var $tab = $(this);
+					var $info = $('#tabInfo');
+					var $name = $('span', $info);
+					$name.text($tab.text());
+					$info.show();
+				}
+			});
+			$('#verticalTab').easyResponsiveTabs({
+				type: 'vertical',
+				width: 'auto',
+				fit: true
+			});
+		});
+	</script>
+	<script>
+		// Can also be used with $(document).ready()
+		$(window).load(function () {
+			$('.flexslider').flexslider({
+				animation: "slide",
+				controlNav: "thumbnails"
+			});
+		});
+	</script>
+	<script>
+		$('.counter').countUp();
+	</script>
+	<!-- //stats -->
+	<!-- start-smoth-scrolling -->
+	<script type="text/javascript" src="{% static 'customer/assets/js/admin/move-top.js' %} "></script>
+	<script type="text/javascript">
+		$(document).ready(function ($) {
+			$(".scroll").click(function (event) {
+				event.preventDefault();
+				$('html,body').animate({ scrollTop: $(this.hash).offset().top }, 1000);
+			});
+		});
+	</script>
+	<!-- here stars scrolling icon -->
+	<script type="text/javascript">
+		$(document).ready(function () {
+			/*
+				var defaults = {
+				containerID: 'toTop', // fading element id
+				containerHoverID: 'toTopHover', // fading element hover id
+				scrollSpeed: 1200,
+				easingType: 'linear' 
+				};
+			*/
+
+			$().UItoTop({ easingType: 'easeOutQuart' });
+
+		});
+	</script>
+	<script>
+		var slideIndex = 1;
+		showSlides(slideIndex);
+		
+		function plusSlides(n) {
+		  showSlides(slideIndex += n);
+		}
+		
+		function currentSlide(n) {
+		  showSlides(slideIndex = n);
+		}
+		
+		function showSlides(n) {
+		  var i;
+		  var slides = document.getElementsByClassName("mySlides");
+		  var dots = document.getElementsByClassName("dot");
+		  if (n > slides.length) {slideIndex = 1}    
+		  if (n < 1) {slideIndex = slides.length}
+		  for (i = 0; i < slides.length; i++) {
+			  slides[i].style.display = "none";  
+		  }
+		  for (i = 0; i < dots.length; i++) {
+			  dots[i].className = dots[i].className.replace(" active", "");
+		  }
+		  slides[slideIndex-1].style.display = "block";  
+		  dots[slideIndex-1].className += " active";
+		}
+		</script>
+	<script>
+		//the ajax function for country
+		console.log("hello")
+		var today = new Date();
+		var dd = today.getDate();
+		var mm = today.getMonth() + 1; //January is 0!
+		var yyyy = today.getFullYear();
+
+		 if (dd < 10) {
+		dd = '0' + dd;
+		}
+
+		if (mm < 10) {
+		mm = '0' + mm;
+		} 
+			 
+		today = yyyy + '-' + mm + '-' + dd;
+		document.getElementById("appdate").setAttribute("min", today);
+	//For Appointment
+		$("#form2").submit(function(e){
+			$("#apperror").html("Appointment Booked Successfuly!... <b> Do Not Refresh Page </b>");
+			$("#done").html("You'll Recieve An Email Regarding To Your Appointment Soon..");
+			e.preventDefault(e);
+			setTimeout(function(){
+				console.log("IN ")
+				$('#form2').unbind('submit').submit();
+			},5000)
+		});
+		
+
+
+	  $("#country-data").change(function () {
+		const country_id=$(this).val();
+		console.log(country_id);
+		$.ajax({
+		  type:"POST",
+		  url: "{% url 'country_ajax-data' %}",
+		  data:{
+			'country_id':country_id,
+			'csrfmiddlewaretoken':$('input[name=csrfmiddlewaretoken]').val(),
+		  },
+		  success:function(data){
+			console.log("Success");
+			let html_data='<option value="" selected disabled>Choose State </option>';
+			data.forEach(function (data) {  
+			  html_data = html_data + `<option value="${data.id}">${data.state_name}</option>`;
+	  
+			});
+			$("#state-data").append(html_data);
+			console.log(html_data)
+		  },
+		  error:function(error){
+			console.log("Error");
+		  }
+		});
+		});
+		//the ajax function for states and city
+		$("#state-data").change(function () {
+		const state_id=$(this).val();
+		console.log(state_id);
+		$.ajax({
+		  type:"POST",
+		  url: "{% url 'state_ajax-data' %}",
+		  data:{
+			'state_id':state_id,
+			'csrfmiddlewaretoken':$('input[name=csrfmiddlewaretoken]').val(),
+		  },
+		  success:function(data){
+			console.log("Success");
+			let html_data='<option value="" selected disabled>Choose City </option>';
+			data.forEach(function (data) {  
+			  html_data =html_data+ `<option value="${data.id}">${data.city_name}</option>`;
+			});
+			$("#city-data").html(html_data);
+		  },
+		  error:function(error){
+			console.log("Error");
+		  }
+		});
+		});
+		//city and area ajax function
+		$("#city-data").change(function () {
+		const city_id=$(this).val();
+		console.log(city_id);
+		$.ajax({
+		  type:"POST",
+		  url: "{% url 'city_ajax-data' %}",
+		  data:{
+			'city_id':city_id,
+			'csrfmiddlewaretoken':$('input[name=csrfmiddlewaretoken]').val(),
+		  },
+		  success:function(data){
+			console.log("Success");
+			let html_data=`<option value="" selected disabled>Choose Area </option>`;
+		  
+			data.forEach(function (data) {  
+			  html_data =html_data + `<option value="${data.id}" name="area_id">${data.area_name}</option>`;
+			  
+			});
+		console.log(html_data)
+			$("#area-data").html(html_data);
+	  
+		  },
+		  error:function(error){
+			console.log("Error");
+		  }
+		});
+		});
+		$("#area-data").change(function () {
+		const area_id=$(this).val();
+		console.log(area_id);
+		$.ajax({
+		  type:"POST",
+		  url: "{% url 'area_ajax-data' %}",
+		  data:{
+			'area_id':area_id,
+			'csrfmiddlewaretoken':$('input[name=csrfmiddlewaretoken]').val(),
+		  },
+		  success:function(data){
+			console.log("Success");
+			let html_data=``;
+		  
+			data.forEach(function (data) {  
+			  html_data =html_data + `<option value="${data.id}" name="area_id">${data.area_name}</option>`;
+			  
+			});
+		console.log(html_data)
+			$("#area-data").html(html_data);
+	  
+		  },
+		  error:function(error){
+			console.log("Error");
+		  }
+		});
+		});
+		$("#username").change(function () {
+			const username=$(this).val();
+			console.log(username);
+			$.ajax({
+			  type:"POST",
+			  url: "{% url 'usercheck' %}",
+			  data:{
+				'username':username,
+				'csrfmiddlewaretoken':$('input[name=csrfmiddlewaretoken]').val(),
+			  },
+			  success:function(data){
+				console.log("Success");
+				let html_data=data  ;
+				console.log(html_data)
+				if (html_data['data'])
+				{
+					console.log("into true ");
+					$("#error").html("");
+
+				}
+				else{
+					console.log("into false ");
+					$("#username").val("");
+					$("#username").focus();
+					$("#error").html("Username Already Exists. !");
+				}
+				
+				console.log(html_data)
+			  },
+			  error:function(error){
+				console.log("Error");
+			  }
+			});
+			});
+
+			//for email 
+			$("#email").change(function () {
+				const email=$(this).val();
+				console.log(email);
+				$.ajax({
+				  type:"POST",
+				  url: "{% url 'emailcheck' %}",
+				  data:{
+					'email':email,
+					'csrfmiddlewaretoken':$('input[name=csrfmiddlewaretoken]').val(),
+				  },
+				  success:function(data){
+					console.log("Success");
+					let html_data=data  ;
+					console.log(html_data)
+					if (html_data['data'])
+					{
+						console.log("into true ");
+						$("#error").html("");
+	
+					}
+					else{
+						console.log("into false ");
+						$("#email").val("");
+						$("#email").focus();
+						$("#error").html("Email Already Exists. !");
+					}
+					
+					console.log(html_data)
+				  },
+				  error:function(error){
+					console.log("Error");
+				  }
+				});
+				});
+				//country
+		$( document ).ready(function(){
+		$.ajax({
+		  type:"GET",
+		  url: "{% url 'c_ajax_data' %}",
+		  data:{
+			
+		  },
+		  success:function(data){
+			console.log("Success",data);
+			let html_data=`<option selected>Choose Country</option>`;
+			let count;
+			data.forEach(function (data) {  
+			  html_data =html_data + `<option value="${data.id}" name="area_id">${data.country_name}</option>`;
+			   count=data.count
+			});
+		console.log(html_data)
+			$("#country-data").html(html_data);
+			$("#lblCartCount").html(count)
+		  },
+		  error:function(error){
+			console.log("Error");
+		  }
+		});
+				});
+				//for company
+				$( document ).ready(function(){
+					$.ajax({
+					  type:"GET",
+					  url: "{% url 'comp_data' %}",
+					  data:{
+						
+					  },
+					  success:function(data){
+						console.log("Success");
+						
+					  
+						data.forEach(function (data) {  
+						 const comp_name = `${data.comp_name}`;
+						 const comp_email=`${data.comp_email}`;
+						 const comp_add=`${data.comp_add}`;
+						 const comp_phone=`${data.comp_phone}`;
+						 $("#address").html(comp_add);
+						 $("#compemail").html(comp_email);
+						 $("#phone").html(comp_phone);
+						});
+						
+					  },
+					  error:function(error){
+						console.log("Error");
+					  }
+					});
+							});
+				//for password
+				$("#cpass").change(function(){
+					const cpass=$(this).val();
+					const pass=$("#pass").val();
+					console.log(pass);
+					if (pass != cpass){
+						$("#error").html("Password And Confirm Password Should Be Same. !");
+						$("#pass").val("");
+						$("#cpass").val("");
+						$("#pass").focus();
+
+					}
+				});
+				//For Appointment
+				
+	  </script>
+	<!-- //here ends scrolling icon -->
+
+	  
+	<!-- for bootstrap working -->
+	<script type="text/javascript" src="{% static 'customer/assets/js/admin/bootstrap.js' %} "></script>
+	<script
+		type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+		{% block js %}
+		{% endblock js %}
+		
+</body>
+
+</html>

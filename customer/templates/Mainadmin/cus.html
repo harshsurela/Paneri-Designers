@@ -1,0 +1,97 @@
+{% extends "Mainadmin/index.html" %}
+{% load static %}
+{% block body %}
+      <!-- Main Content -->
+      <div class="main-content">
+        <section class="section">
+          <div class="section-body">
+            <!-- add content here -->
+           <div class="row ">
+            <div class="col-12">
+              <div class="card">
+                <div class="card-header">
+                  <h4>All Customers</h4>
+                  <div class="card-header-form">
+                    <form action="{% url 'searchCustomer' %}" id="sup" method="POST">
+                      {% csrf_token %}
+                      <div class="input-group">
+                        <input type="text" name="search" class="form-control" placeholder="Search">
+                        <div class="input-group-btn">
+                          <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i></button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              <div class="card-body">
+                  <div class="table-responsive">
+                    {% if customers %}
+                                      
+                    <table class="table table-striped">
+                      <tr>
+                        <th>ID</th>
+                        <th>Customer Name</th>
+                        <th>Customer Pincode</th>
+                        <th>Address</th>
+                        <th>Contact Number</th>
+                        <th>
+                         All Details
+                        </th>
+                      </tr>
+                      {% for cus in customers  %}        
+                      <tr>
+                        <td>{{cus.user_id.id}}</td>
+                        <td class="text-truncate">
+                          {{cus.first_name}} {{cus.last_name}}
+                        </td>
+                        <td>{{cus.pincode}}</td>
+                        <td>{{cus.cus_add1}}</td>
+                        <td>{{cus.Cus_phone}}</td>
+                        <td><a href="{% url 'customerdet' cus.user_id.id %}" class="btn btn-outline-primary">View Details</a></td>
+                      </tr> 
+                      
+                   
+                     
+                    {% endfor %}
+                  </table>
+                  <div class="pagination">
+                    <span class="step-links">
+                        {% if customers.has_previous %}
+                            <a href="?page=1">&laquo; <button class="btn btn-primary"> First</button></a>
+                            <a href="?page={{ customers.previous_page_number }}"><button class="btn btn-primary"> Previous</button></a>
+                        {% endif %}
+                
+                        <span class="current">
+                            Page {{ customers.number }} of {{ customers.paginator.num_pages }}.
+                        </span>
+                
+                        {% if complaint.has_next %}
+                            <a href="?page={{ customers.next_page_number }}"><button class="btn btn-primary">next</button> </a>
+                            <a href="?page={{ customers.paginator.num_pages }}"><button class="btn btn-primary">Previous &raquo;</button></a>
+                        {% endif %}
+                    </span>
+                </div>
+                  {% else %}
+                  <hr>
+                  <h4 class="text-center">No Customer Found</h4>
+                    {% endif %}
+                    
+                  </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <!-- end content here -->
+          </div>
+        </section>
+      </div>
+      <footer class="main-footer">
+        <div class="footer-right">
+        </div>
+      </footer>
+    </div>
+  </div>
+    
+  {% endblock body %}
+</body>
+</html>

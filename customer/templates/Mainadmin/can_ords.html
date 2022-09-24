@@ -1,0 +1,92 @@
+{% extends "Mainadmin/index.html" %}
+{% load static %}
+{% block body %}
+      <!-- Main Content -->
+      <div class="main-content">
+        <section class="section">
+          <div class="section-body">
+            <!-- add content here -->
+            <h3 class="page-title">Cancelled Orders </h3>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-12 table-responsive">
+                        {% if order %}
+                        <table id="order-listing" class="table" cellspacing="0" width="100%">
+                          <thead>
+                            <tr class="bg-primary ">
+                              <th>Customer Name</th>
+                              <th>Order No.</th>
+                              <th>Cancel Date</th>
+                              <th>Total Price</th>
+                              <th>Payment Status</th>
+                              <th>Action</th>
+                            </tr>
+                          </thead>
+                          <tbody> 
+                            {% for o,m in order %}                             
+                            <tr>
+                              <td>{{o.userbase.first_name}} {{o.userbase.last_name}}</td>
+                              <td>{{o.id}}</td>
+                              <td>{{o.c_date}}</td>
+                              <td>{{m}}</td>
+                              <td >
+                                {% if o.payment_status == "paid" %}
+                                <label class="badge badge-success">{{o.payment_status}}</label> 
+                                  {% elif o.payment_status == "pending" %}
+                                <label class="badge badge-warning">{{o.payment_status}}</label> 
+                                  {% elif o.payment_status == "cancelled" %}
+                                <label class="badge badge-danger">{{o.payment_status}}</label> 
+
+                                {% endif %}
+                              </td>
+                              <td class="text-left">
+                                <a href="{% url 'det_rec_ord' o.id %}"><button class="btn btn-light">
+                                  <i class="icon-eye text-primary"></i>View </button></a>
+                              </td>
+                            </tr>
+                            {% endfor %}                       
+                          </tbody>
+                        </table>
+                        {% else %}
+                      <h6 class="text-center"> <b> No Records....</b></h6>
+
+                        {% endif %}
+                        <div class="pagination">
+                          <span class="step-links">
+                              {% if orders.has_previous %}
+                                  <a href="?page=1">&laquo; <button class="btn btn-primary"> First</button></a>
+                                  <a href="?page={{ orders.previous_page_number }}"><button class="btn btn-primary"> Previous</button></a>
+                              {% endif %}
+                      
+                              <span class="current">
+                                  Page {{ orders.number }} of {{ orders.paginator.num_pages }}.
+                              </span>
+                      
+                              {% if orders.has_next %}
+                                  <a href="?page={{ orders.next_page_number }}"><button class="btn btn-primary">next</button> </a>
+                                  <a href="?page={{ orders.paginator.num_pages }}"><button class="btn btn-primary">Previous &raquo;</button></a>
+                              {% endif %}
+                          </span>
+                      </div>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            <!-- end content here -->
+          </div>
+        </section>
+      </div>
+      <footer class="main-footer">
+        <div class="footer-right">
+        </div>
+      </footer>
+    </div>
+  </div>
+{% endblock body %}
+</body>
+</html>
