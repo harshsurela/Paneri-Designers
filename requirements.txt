@@ -24,7 +24,7 @@ defusedxml==0.7.1
 distlib==0.3.2
 distro==1.4.0
 distro-info===0.23ubuntu1
-Django==3.2.15
+Django==3.2.17
 django-allauth==0.49.0
 django-cleanup==5.2.0
 django-cors-headers==3.7.0
